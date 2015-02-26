@@ -3,43 +3,42 @@ class SquareGrid implements Grid
 {
     private $gridData = new SplObjectStorage();
 
-    public function setCell(Coordinate $coord, Cell $data)
+    public function setCell(Coordinate2D $coord, Cell $data)
     {
         $this->gridData[$coord] = $data;
     }
 
-    public function getCell(Coordinate $coord)
+    public function getCell(Coordinate2D $coord)
     {
-
         return $this->gridData[$coord];
     }
 
-    public function __invoke(Coordinate $coord)
+    public function __invoke(Coordinate2D $coord)
     {
         return $this->getCell($coord);
     }
 
-    public function __isset(Coordinate $coord)
+    public function __isset(Coordinate2D $coord)
     {
 
     }
 
-    public function __unset(Coordinate $coord)
+    public function __unset(Coordinate2D $coord)
     {
 
     }
 
-    public function isAdjacent(Coordinate $coord1, Coordinate $coord2)
+    public function isAdjacent(Coordinate2D $coord1, Coordinate2D $coord2)
     {
 
     }
 
-    public function getWeight(Coordinate $coord1, Coordinate $coord2)
+    public function getWeight(Coordinate2D $coord1, Coordinate2D $coord2)
     {
 
     }
 
-    public function setWeight(Coordinate $coord1, Coordinate $coord2)
+    public function setWeight(Coordinate2D $coord1, Coordinate2D $coord2)
     {
 
     }
@@ -47,20 +46,20 @@ class SquareGrid implements Grid
 
 class SquareCell extends Cell
 {
-    protected $face
-    protected $sEdge
-    protected $wEdge
-    protected $vertex
+    public $face
+    public $sEdge
+    public $wEdge
+    public $vertex
 
     public getNeighbors()
     {
-        $x = $coordinates->x;
-        $y = $coordinates->y;
+        $x = $this->coordinates->x;
+        $y = $this->coordinates->y;
         return array(
-            new Coordinate($x + 1, $y),
-            new Coordinate($x, $y + 1),
-            new Coordinate($x - 1, $y),
-            new Coordinate($x, $y - 1)
+            new Coordinate2D($x + 1, $y),
+            new Coordinate2D($x, $y + 1),
+            new Coordinate2D($x - 1, $y),
+            new Coordinate2D($x, $y - 1)
         );
     }
 }

@@ -14,12 +14,21 @@ abstract class Cell
 {
     private $coordinates;
 
-    private __construct(Coordinate $coords)
+    public __construct($coords)
     {
-        $this->coordinates = $coords;
+        if (in_array('Coordinate', class_uses($coords))){
+            $this->coordinates = $coords;
+        } else {
+            throw new InvalidArgumentException("The argument must have the Coordinate trait.");
+        }
     }
 
-    public function getNeighbors();
+    protected function getCoordinates()
+    {
+        return $this->coordinates;
+    }
+
+    abstract public function getNeighbors();
 }
 
 trait Coordinate
@@ -28,7 +37,7 @@ trait Coordinate
     {
         //Get list of property names
         $properties = array_keys(get_class_vars(__CLASS__));
-        //throw error if number of properties and number of arguments does not match
+        //combine arrays so $property => $value
         if (($toAssign = array_combine($properties, func_get_arg($i)))) {
             //Set properties
             foreach ($toAssign as $prop=>$val) {
@@ -43,8 +52,22 @@ trait Coordinate
         }
     }
 
+    public function __get($name)
+    {
+        if (in_array($name, array_keys(get_class_vars(__CLASS__)))) {
+            return $this->$name;
+        } else {
+            throw new BadMethodCallException("$name is not a valid property.");
+        }
+    }
+
+    public function toArray()
+    {
+        return get_object_vars($this);
+    }
+
     public function __toString()
     {
-        return '(' . implode(', ', get_object_vars($this)) . ')';
+        return '(' . implode(', ', $this->toArray()) . ')';
     }
 }
