@@ -1,44 +1,16 @@
 <?php
-class SquareGrid implements Grid
+class SquareGrid extends Grid
 {
-    private $gridData = new SplObjectStorage();
-
-    public function setCell(Coordinate2D $coord, Cell $data)
+    public function __construct($size)
     {
-        $this->gridData[$coord] = $data;
+        parent::__construct('SquareCell');
     }
-
-    public function getCell(Coordinate2D $coord)
-    {
-        return $this->gridData[$coord];
-    }
-
-    public function __invoke(Coordinate2D $coord)
-    {
-        return $this->getCell($coord);
-    }
-
-    public function __isset(Coordinate2D $coord)
+    public function getWeight(SquareCoordinate $coord1, SquareCoordinate $coord2)
     {
 
     }
 
-    public function __unset(Coordinate2D $coord)
-    {
-
-    }
-
-    public function isAdjacent(Coordinate2D $coord1, Coordinate2D $coord2)
-    {
-
-    }
-
-    public function getWeight(Coordinate2D $coord1, Coordinate2D $coord2)
-    {
-
-    }
-
-    public function setWeight(Coordinate2D $coord1, Coordinate2D $coord2)
+    public function setWeight(SquareCoordinate $coord1, SquareCoordinate $coord2, $weight)
     {
 
     }
@@ -50,23 +22,20 @@ class SquareCell extends Cell
     public $sEdge
     public $wEdge
     public $vertex
-
-    public getNeighbors()
-    {
-        $x = $this->coordinates->x;
-        $y = $this->coordinates->y;
-        return array(
-            new Coordinate2D($x + 1, $y),
-            new Coordinate2D($x, $y + 1),
-            new Coordinate2D($x - 1, $y),
-            new Coordinate2D($x, $y - 1)
-        );
-    }
 }
 
-class Coordinate2D
+class SquareCoordinate extends Coordinate
 {
-    use Coordinate;
-    private $x;
-    private $y;
+    protected $x;
+    protected $y;
+
+    public function calculateNeighbors()
+    {
+        return array(
+            new SquareCoordinate($this->x + 1, $this->y),
+            new SquareCoordinate($this->x, $this->y + 1),
+            new SquareCoordinate($this->x - 1, $this->y),
+            new SquareCoordinate($this->x, $this->y - 1)
+        );
+    }
 }
