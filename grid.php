@@ -1,69 +1,92 @@
 <?php
+/**
+ * @file grid.php
+ * @author Wass
+ * @brief Brief
+ * @details Details
+ * 
+ * @version 1.0.0 - 2015-03-02
+ * * Initial Version
+ */
+ 
+/**
+ * @class Example
+ * @author Full Name
+ * @brief This is a short description of the class
+ * @description To show code examples, separate the code block with blank lines 
+ */
 abstract class Grid extends SplObjectStorage implements GraphInterface
 {
     /**
-     *  Constructs a regular grid
-     *  Must pass in the name of a class which extends the Cell class.
+     * @brief Brief
+     * @param [in] $cellType Parameter_Description
+     * @return Return_Description
      */
     public function __construct($cellType)
     {
         if (!in_array('Cell', class_parents($cellType)) {
             parent::__construct();
         } else {
-            throw new InvalidArgumentException("$cellType must extend the Cell class.");
+            trigger_error("$cellType must extend the Cell class.", E_USER_ERROR);
         }
     }
 
     ///////////SPLObjectStorage Overwrites//////////////
-    public function offsetSet($coordinate, $data = null)
+    public function offsetSet(Coordinate $coordinate, $data = null)
     {
-        if (in_array('Coordinate', class_uses($coordinate)) {
-            parent::offsetSet($coordinate, $data);
+        if (in_array('Coordinate', class_parents($coordinate)) {
+            parent::offsetSet(Coordinate $coordinate, $data);
         } else {
-            throw new InvalidArgumentException("The offset object must have the Coordinate trait.");
+            throw new InvalidArgumentException("$coordinate must extend the Coordinate class.");
         }
     }
 
-    public function attach($coordinate, $data = null)
+    public function attach(Coordinate $coordinate, $data = null)
     {
         $this->offsetSet($coordinate, $data);
     }
 
     ///////////GraphInterface implementation///////////
-    public function isAdjacent($coordinate1, $coordinate2)
+    public function isAdjacent(Coordinate $coordinate1, Coordinate $coordinate2)
     {
-        return (
+        return in_array($coordinate2, $coordinate1->calculateNeighbors());
     }
-    
-    public function getNeighbors($coordinate)
+
+    public function getNeighbors(Coordinate $coordinate)
     {
-        return $this->getNode($coordinate)->getNeighbors();
+        return $coordinate->calculateNeighbors();
     }
-    
-    public function getNode($coordinate)
+
+    public function getNode(Coordinate $coordinate)
     {
         return $this->offsetGet($coordinate);
     }
-    
-    public function setNode($coordinate, $data)
+
+    public function setNode(Coordinate $coordinate, $data)
     {
-        $this->offsetSet($coordinate, $data);
+        try {
+            $this->offsetSet($coordinate, $data);
+            return true;
+        } catch (InvalidArgumentException $e) {
+            trigger_error($e, E_USER_WARNING);
+            return false;
+        }
     }
 
     //Cannot manually connect or disconnect in a fixed grid.
     public function connect($node1, $node2)
     {
-        throw new BadMethodCallException("Cannot modify edges in a fixed graph");
+        return false;
     }
 
     public function disconnect($node1, $node2)
     {
-        throw new BadMethodCallException("Cannot modify edges in a fixed graph");
+        return false;
     }
 
     //Weight information is controlled by the children of this class.
-    abstract public function getWeight(Cell $cell1, Cell $cell2);
-    abstract public function setWeight(Cell $cell1, Cell $cell2, $weight);
+    abstract public function getWeight($cell1, $cell2);
+    abstract public function setWeight($cell1, $cell2, $weight);
 
 }
 /**
@@ -76,10 +99,10 @@ abstract class Cell
 
     final public function __construct($coords)
     {
-        if (in_array('Coordinate', class_uses($coords)) {
+        if (in_array('Coordinate', class_parents($coords)) {
             $this->coordinates = $coords;
         } else {
-            throw new InvalidArgumentException("The argument object must have the Coordinate trait.");
+            throw new InvalidArgumentException("$coords must extend the Coordinate class.");
         }
     }
 
@@ -140,6 +163,6 @@ abstract class Coordinate
     {
         return '(' . implode(', ', $this->toArray()) . ')';
     }
-    
+
     abstract public function calculateNeighbors();
 }

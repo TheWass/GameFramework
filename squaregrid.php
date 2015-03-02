@@ -5,23 +5,24 @@ class SquareGrid extends Grid
     {
         parent::__construct('SquareCell');
     }
-    public function getWeight(SquareCoordinate $coord1, SquareCoordinate $coord2)
-    {
 
+    public function getWeight(SquareCell $cell1, SquareCell $cell2)
+    {
+        
     }
 
-    public function setWeight(SquareCoordinate $coord1, SquareCoordinate $coord2, $weight)
+    public function setWeight(SquareCell $cell1, SquareCell $cell2, $weight)
     {
-
+        
     }
 }
 
 class SquareCell extends Cell
 {
-    public $face
-    public $sEdge
-    public $wEdge
-    public $vertex
+    public $face;
+    public $sEdge;
+    public $wEdge;
+    public $vertex;
 }
 
 class SquareCoordinate extends Coordinate
