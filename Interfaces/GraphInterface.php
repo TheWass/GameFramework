@@ -1,17 +1,19 @@
 <?php
 /**
  * @file graphinterface.php
- * @author Wass
+ * @author The Wass
  * @brief This file contains an interface for a basic graph functionality.
  *
  * @version 1.0.0 - 2015-03-02
  * * Initial Version
  * * Added full documentation
+ * @version 1.0.1 - 2015-03-13
+ * * Added the appropriate namespace for autoloading.
  */
-
+namespace Wasser\GameFramework\Interfaces;
 /**
  * @interface GraphInterface
- * @author Wass
+ * @author The Wass
  * @brief Standard interface for a graph datastructure.
  * @description This is a basic interface for implementing graph data structures.
  * Notice: All functions in this interface MUST handle exceptions within the implementing class.

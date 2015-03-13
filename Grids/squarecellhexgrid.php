@@ -1,5 +1,7 @@
 <?php
-class SquareGrid extends Grid
+namespace TheWass\GameFramework\Grids;
+
+class HexGrid
 {
     public function __construct($size)
     {
