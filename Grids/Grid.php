@@ -105,5 +105,4 @@ abstract class Grid extends SplObjectStorage implements GraphInterface
      * @return Boolean - Success or Failure
      */
     abstract public function setWeight($cell1, $cell2, $weight);
-
 }

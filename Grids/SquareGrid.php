@@ -5,7 +5,7 @@ class SquareGrid extends Grid
 {
     public function __construct($size)
     {
-        parent::__construct('SquareCell');
+        parent::__construct('FourSidedCell');
     }
 
     public function getWeight(SquareCell $cell1, SquareCell $cell2)

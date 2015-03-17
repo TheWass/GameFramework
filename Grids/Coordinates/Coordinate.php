@@ -21,7 +21,7 @@ abstract class Coordinate
     public function __construct()
     {
         //Get list of property names
-        $properties = array_keys(get_class_vars(__CLASS__));
+        $properties = array_keys(get_class_vars(get_class($this)));
         //combine arrays so $property => $value
         if (($toAssign = array_combine($properties, func_get_arg($i)))) {
             //Set properties
@@ -39,7 +39,7 @@ abstract class Coordinate
 
     public function __get($name)
     {
-        if (in_array($name, array_keys(get_class_vars(__CLASS__)))) {
+        if (in_array($name, array_keys(get_class_vars(get_class($this))))) {
             return $this->$name;
         } else {
             throw new BadMethodCallException("$name is not a valid property.");
