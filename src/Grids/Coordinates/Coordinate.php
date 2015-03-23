@@ -7,6 +7,11 @@
  * @version 1.0 - 2015-03-13
  * * Reorganized files
  * * Added Namespacing
+ * 
+ * @version 2.0 - 2015-03-23
+ * * Migrated neighbors to this class, pulling it out of the Cell's responsibility.
+ * * Added get and set weights
+ * * Added functionality for children to restrict coordinate values using the validate function.
  */
 namespace Wasser\GameFramework\Grids\Coordinates;
 /**
@@ -18,6 +23,8 @@ namespace Wasser\GameFramework\Grids\Coordinates;
  */
 abstract class Coordinate
 {
+    private $neighbors; //Storage object to hold the neighbors and associated weights
+
     public function __construct()
     {
         //Get list of property names
@@ -35,6 +42,12 @@ abstract class Coordinate
         } else {
             throw new InvalidArgumentException("Invalid number of arguments passed.  Need ". count($properties));
         }
+        //set neighbors and initial weights
+        $this->neighbors = new SplObjectStorage();
+        $neighbors = $this->calculateNeighbors();
+        foreach ($neighbors as $neighbor) {
+            $this->neighbors[$neighbor] = 1;
+        }
     }
 
     public function __get($name)
@@ -46,14 +59,42 @@ abstract class Coordinate
         }
     }
 
+    public function __toString()
+    {
+        return '(' . implode(', ', $this->toArray()) . ')';
+    }
+
     public function toArray()
     {
         return get_object_vars($this);
     }
 
-    public function __toString()
+    public function getNeighbors()
     {
-        return '(' . implode(', ', $this->toArray()) . ')';
+        $neighbors = array();
+        foreach ($this->neighbors as $coord) {
+            $neighbors[] = $coord;
+        }
+        return $neighbors;
+    }
+
+    public getWeight(Coordinate $dest)
+    {
+        if $this->neighbors->contains($dest) {
+            return $this->neighbors[$dest];
+        } else {
+            return false;
+        }
+    }
+
+    public setWeight(Coordinate $dest, $weight)
+    {
+        if $this->neighbors->contains($dest) {
+            $this->neighbors[$dest] = $weight
+            return $weight;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -61,7 +102,7 @@ abstract class Coordinate
      * @return An array of coordinate objects.
      */
     abstract public function calculateNeighbors();
-    
+
     /**
      * @brief Validates the value for the property. Intended on being overwritten.
      * @param $property - Property to be tested

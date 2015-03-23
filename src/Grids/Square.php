@@ -20,6 +20,6 @@ class Square extends Rectangle
     {
         $this->height = $size;
         $this->width = $size;
-        parent::__construct('FourSided', 'Square');
+        parent::__construct('Square');
     }
 }

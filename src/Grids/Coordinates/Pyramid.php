@@ -5,14 +5,13 @@
  * @brief This file defines a coordinate system which creates a Pyramid
  *
  * @version 1.0 - 2015-03-13
- * * Reorganized files
- * * Added Namespacing
+ * * Initial version
  */
 namespace Wasser\GameFramework\Grids\Coordinates;
 /**
  * @class Square
  * @author The Wass
- * @brief Class which tesselates into a Pyramid grid.
+ * @brief Class which tesselates into a Pyramid-like grid.
  * @description description
  */
 class Pyramid extends Coordinate

@@ -15,6 +15,9 @@
  * @version 1.2 - 2015-03-18
  * * Added parameters to keep track of the cell type and coordinate system
  * * Changed the weight set/get to work off of locations rather than cells.
+ *
+ * @version 1.3 - 2015-03-23
+ * * Decoupled the Cell class.  The grid can now store any type of data.
  */
 namespace TheWass\GameFramework\Grids;
 
@@ -27,57 +30,46 @@ use TheWass\GameFramework\Interfaces as Interfaces;
  */
 abstract class Grid extends \SplObjectStorage implements Interfaces\Graph
 {
-    private $cellType;
     private $coordinateSystem;
 
     /**
      * @brief Constructor for the grid.
-     * @param $cellType         - String representing the chosen Cell class
      * @param $coordinateSystem - String of the desired Coordinate class
      */
-    public function __construct($cellType, $coordinateSystem)
+    public function __construct($coordinateSystem)
     {
-        if (in_array('Cell', class_parents($cellType))) {
-            $this->cellType = $cellType;
-            if (in_array('Coordinate', class_parents($coordinateSystem))) {
-                $this->coordinateSystem = $coordinateSystem;
-                parent::__construct();
-            } else {
-                throw new InvalidArgumentException("$coordinateSystem must extend the Coordinate class.");
-            }
+        if (in_array('Coordinate', class_parents($coordinateSystem))) {
+            $this->coordinateSystem = $coordinateSystem;
+            parent::__construct();
         } else {
-            throw new InvalidArgumentException("$cellType must extend the Cell class.");
+            throw new InvalidArgumentException("$coordinateSystem must extend the Coordinate class.");
         }
     }
 
     ///////////SPLObjectStorage Overwrites//////////////
-    public function offsetSet(Coordinate $coordinate, Cell $data)
+    public function offsetSet(Coordinate $coordinate, $data)
     {
         if (is_a($coordinate, $this->coordinateSystem)) {
-            if (is_a($data, $this->cellType)) {
-                parent::offsetSet($coordinate, $data);
-            } else {
-                throw new InvalidArgumentException("$data must be a $cellType.");
-            }
+            parent::offsetSet($coordinate, $data);
         } else {
             throw new InvalidArgumentException("$coordinate must be a $coordinateSystem");
         }
     }
 
-    public function attach(Coordinate $coordinate, Cell $data)
+    public function attach(Coordinate $coordinate, $data)
     {
         $this->offsetSet($coordinate, $data);
     }
 
     ///////////GraphInterface implementation///////////
-    public function isAdjacent(Coordinate $coordinate1, Coordinate $coordinate2)
+    public function isAdjacent(Coordinate $source, Coordinate $destination)
     {
-        return in_array($coordinate2, $coordinate1->calculateNeighbors());
+        return in_array($destination, $source->getNeighbors());
     }
 
     public function getNeighbors(Coordinate $coordinate)
     {
-        return $coordinate->calculateNeighbors();
+        return $coordinate->getNeighbors();
     }
 
     public function getNode(Coordinate $coordinate)
@@ -85,7 +77,7 @@ abstract class Grid extends \SplObjectStorage implements Interfaces\Graph
         return $this->offsetGet($coordinate);
     }
 
-    public function setNode(Coordinate $coordinate, Cell $data)
+    public function setNode(Coordinate $coordinate, $data)
     {
         $this->offsetSet($coordinate, $data);
     }
@@ -101,21 +93,13 @@ abstract class Grid extends \SplObjectStorage implements Interfaces\Graph
         return false;
     }
 
-    //Weight information is controlled by the children of this class.
-    /**
-     * @brief Gets the weight of the edge connecting two cells
-     * @param $coordinate1 - Source location
-     * @param $coordinate2 - Destination location
-     * @return Integer denoting the edge weight
-     */
+    public function getWeight(Coordinate $source, Coordinate $destination)
+    {
+        return $source->getWeight($destination);
+    }
 
-    abstract public function getWeight($coordinate1, $coordinate2);
-    /**
-     * @brief Sets the weight of the edge connecting two cells
-     * @param $coordinate1  - Source location
-     * @param $coordinate2  - Destination location
-     * @param $weight - Desired weight
-     * @return Boolean - Success or Failure
-     */
-    abstract public function setWeight($coordinate1, $coordinate2, $weight);
+    public function setWeight(Coordinate $source, Coordinate $destination, $weight)
+    {
+        return $source->getWeight($destination, $weight);
+    }
 }
