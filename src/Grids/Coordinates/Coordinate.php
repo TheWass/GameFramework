@@ -26,10 +26,10 @@ abstract class Coordinate
         if (($toAssign = array_combine($properties, func_get_arg($i)))) {
             //Set properties
             foreach ($toAssign as $prop=>$val) {
-                if (is_int($val)) {
+                if ($this->validate($prop, $val)) {
                     $this->$prop = $val;
                 } else {
-                    throw new InvalidArgumentException("$prop must be an integer!");
+                    throw new InvalidArgumentException("$val is not valid for $prop");
                 }
             }
         } else {
@@ -61,4 +61,15 @@ abstract class Coordinate
      * @return An array of coordinate objects.
      */
     abstract public function calculateNeighbors();
+    
+    /**
+     * @brief Validates the value for the property. Intended on being overwritten.
+     * @param $property - Property to be tested
+     * @param $value    - Value to be tested
+     * @return Boolean
+     */
+    public function validate($property, $value)
+    {
+        return is_int($value);
+    }
 }

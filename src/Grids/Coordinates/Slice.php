@@ -24,6 +24,15 @@ class Slice extends Coordinate
     protected $x;
     protected $y;
 
+    public function validate($property, $value)
+    {
+        if (strtolower($property) == 'slice' or strtolower($property) == 'y') {
+            return (is_int($value) and $value >= 0);
+        } else {
+            return is_int($value);
+        }
+    }
+
     public function calculateNeighbors()
     {
         /*

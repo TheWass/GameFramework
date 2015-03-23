@@ -31,7 +31,7 @@ class Axial extends Coordinate
         );
     }
 
-    public function toHexCube
+    public function toHexCube();
     {
         $z = 0 - $x - $y
         return new HexCube($this->x, $this->y, $z);
