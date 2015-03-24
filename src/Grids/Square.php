@@ -6,6 +6,8 @@
  *
  * @version 1.0 - 2015-03-18
  * * Initial Version
+ * @version 1.1 - 2015-03-24
+ * * Updated to function with the parent class.
  */
 namespace TheWass\GameFramework\Grids;
 /**
@@ -18,8 +20,6 @@ class Square extends Rectangle
 {
     public function __construct($size = 0)
     {
-        $this->height = $size;
-        $this->width = $size;
-        parent::__construct('Square');
+        parent::__construct($size, $size);
     }
 }

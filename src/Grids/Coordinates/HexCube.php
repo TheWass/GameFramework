@@ -7,7 +7,7 @@
  * @version 1.0 - 2015-03-18
  * * Initial version
  */
-namespace Wasser\GameFramework\Grids\Coordinates;
+namespace TheWass\GameFramework\Grids\Coordinates;
 /**
  * @class HexCube
  * @author The Wass
@@ -19,6 +19,14 @@ class HexCube extends Coordinate
     protected $x;
     protected $y;
     protected $z;
+    
+    public function __construct($x, $y, $z)
+    {
+        if ($x + $y + $z != 0) {
+            throw new InvalidArgumentException("($x, $y, $z) is not a valid HexCube Coordinate.");
+        }
+        parent::__construct($x, $y, $z);
+    }
 
     public function calculateNeighbors()
     {

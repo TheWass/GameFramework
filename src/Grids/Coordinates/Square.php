@@ -8,7 +8,7 @@
  * * Reorganized files
  * * Added Namespacing
  */
-namespace Wasser\GameFramework\Grids\Coordinates;
+namespace TheWass\GameFramework\Grids\Coordinates;
 /**
  * @class Square
  * @author The Wass

@@ -11,6 +11,8 @@
  * * Modified Class to match the changes to abstract Grid.
  */
 namespace TheWass\GameFramework\Grids;
+
+use TheWass\GameFramework\Grids\Coordinates\Square;
 /**
  * @class Rectangle
  * @author The Wass
@@ -33,7 +35,7 @@ class Rectangle extends Grid
         parent::__construct('Square');
     }
 
-    public function offsetSet(Coordinates\Square $coordinate, $data)
+    public function offsetSet(Square $coordinate, $data)
     {
         if ((abs($coordinate->x) > $width and $width != 0) or
             (abs($coordinate->y) > $height and $height != 0)) {
@@ -42,7 +44,7 @@ class Rectangle extends Grid
         parent::offsetSet($coordinate, $data);
     }
 
-    public function attach(Coordinates\Square $coordinate, $data)
+    public function attach(Square $coordinate, $data)
     {
         $this->offsetSet($coordinate, $data);
     }

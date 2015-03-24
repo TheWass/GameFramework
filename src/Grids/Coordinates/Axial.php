@@ -7,7 +7,7 @@
  * @version 1.0 - 2015-03-18
  * * Initial version
  */
-namespace Wasser\GameFramework\Grids\Coordinates;
+namespace TheWass\GameFramework\Grids\Coordinates;
 /**
  * @class Axial
  * @author The Wass

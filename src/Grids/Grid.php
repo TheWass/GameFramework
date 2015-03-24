@@ -52,7 +52,7 @@ abstract class Grid extends \SplObjectStorage implements Interfaces\Graph
         if (is_a($coordinate, $this->coordinateSystem)) {
             parent::offsetSet($coordinate, $data);
         } else {
-            throw new InvalidArgumentException("$coordinate must be a $coordinateSystem");
+            throw new InvalidArgumentException("$coordinate must be a {$this->coordinateSystem}");
         }
     }
 

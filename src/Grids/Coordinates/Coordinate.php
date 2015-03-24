@@ -13,7 +13,7 @@
  * * Added get and set weights
  * * Added functionality for children to restrict coordinate values using the validate function.
  */
-namespace Wasser\GameFramework\Grids\Coordinates;
+namespace TheWass\GameFramework\Grids\Coordinates;
 /**
  * @class Coordinate
  * @author The Wass
