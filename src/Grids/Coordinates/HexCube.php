@@ -28,7 +28,7 @@ class HexCube extends Coordinate
         parent::__construct($x, $y, $z);
     }
 
-    public function calculateNeighbors()
+    protected function calculateNeighbors()
     {
         return array(
             new HexCube($this->x + 1, $this->y - 1, $this->z),

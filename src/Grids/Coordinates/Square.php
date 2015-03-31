@@ -20,7 +20,7 @@ class Square extends Coordinate
     protected $x;
     protected $y;
 
-    public function calculateNeighbors()
+    protected function calculateNeighbors()
     {
         return array(
             new Square($this->x + 1, $this->y),

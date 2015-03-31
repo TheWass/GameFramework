@@ -7,11 +7,13 @@
  * @version 1.0 - 2015-03-13
  * * Reorganized files
  * * Added Namespacing
- * 
+ *
  * @version 2.0 - 2015-03-23
  * * Migrated neighbors to this class, pulling it out of the Cell's responsibility.
  * * Added get and set weights
  * * Added functionality for children to restrict coordinate values using the validate function.
+ * @version 2.1 - 2015-03-31
+ * * Protected calculate neighbors.  getNeighbors should be used to get the neighbors.
  */
 namespace TheWass\GameFramework\Grids\Coordinates;
 /**
@@ -23,40 +25,43 @@ namespace TheWass\GameFramework\Grids\Coordinates;
  */
 abstract class Coordinate
 {
-    private $neighbors; //Storage object to hold the neighbors and associated weights
+    private $neighbors;     //Storage object to hold the neighbors and associated weights
 
     public function __construct()
     {
-        //Get list of property names
-        $properties = array_keys(get_class_vars(get_class($this)));
+        //Get list of property names of the child only
+        $properties = array_keys(array_diff_key(get_class_vars(get_class($this)),
+                                                get_class_vars(get_class())));
         //combine arrays so $property => $value
-        if (($toAssign = array_combine($properties, func_get_arg($i)))) {
+        if (($toAssign = array_combine($properties, func_get_args()))) {
             //Set properties
             foreach ($toAssign as $prop=>$val) {
                 if ($this->validate($prop, $val)) {
                     $this->$prop = $val;
                 } else {
-                    throw new InvalidArgumentException("$val is not valid for $prop");
+                    throw new \InvalidArgumentException("$val is not valid for $prop");
                 }
             }
         } else {
-            throw new InvalidArgumentException("Invalid number of arguments passed.  Need ". count($properties));
-        }
-        //set neighbors and initial weights
-        $this->neighbors = new SplObjectStorage();
-        $neighbors = $this->calculateNeighbors();
-        foreach ($neighbors as $neighbor) {
-            $this->neighbors[$neighbor] = 1;
+            throw new \InvalidArgumentException("Invalid number of arguments passed.  Need ". count($properties));
         }
     }
 
     public function __get($name)
     {
-        if (in_array($name, array_keys(get_class_vars(get_class($this))))) {
+        if ($name == 'neighbors') {
+            return $this->getNeighbors();
+        } else if (property_exists(get_class($this), $name)) {
             return $this->$name;
         } else {
-            throw new BadMethodCallException("$name is not a valid property.");
+            throw new \BadMethodCallException("$name is not a valid property.");
         }
+    }
+    
+    //Prevent attribute mutation
+    final public function __set($name, $value)
+    {
+        throw new \BadMethodCallException("Cannot set $name");
     }
 
     public function __toString()
@@ -66,11 +71,25 @@ abstract class Coordinate
 
     public function toArray()
     {
-        return get_object_vars($this);
+        return array_diff_key(get_class_vars(get_class($this)),
+                              get_class_vars(get_class()));
+    }
+    
+    private function initializeNeighbors()
+    {
+        $this->neighbors = new \SplObjectStorage();
+        $neighbors = $this->calculateNeighbors();
+        foreach ($neighbors as $neighbor) {
+            $this->neighbors[$neighbor] = 1;
+        }
     }
 
     public function getNeighbors()
     {
+        if (!isset($this->neighbors)) {
+            $this->initializeNeighbors();
+        }
+
         $neighbors = array();
         foreach ($this->neighbors as $coord) {
             $neighbors[] = $coord;
@@ -78,30 +97,33 @@ abstract class Coordinate
         return $neighbors;
     }
 
-    public getWeight(Coordinate $dest)
+    public function getWeight(Coordinate $dest)
     {
-        if $this->neighbors->contains($dest) {
+        if (!isset($this->neighbors)) {
+            $this->initializeNeighbors();
+        }
+        var_dump($this->neighbors);
+        if ($this->neighbors->contains($dest)) {
             return $this->neighbors[$dest];
         } else {
+            throw new \InvalidArgumentException("$dest is not a neighbor of $this");
             return false;
         }
     }
 
-    public setWeight(Coordinate $dest, $weight)
+    public function setWeight(Coordinate $dest, $weight)
     {
-        if $this->neighbors->contains($dest) {
-            $this->neighbors[$dest] = $weight
+        if (!isset($this->neighbors)) {
+            $this->initializeNeighbors();
+        }
+        if ($this->neighbors->contains($dest)) {
+            $this->neighbors[$dest] = $weight;
             return $weight;
         } else {
+            throw new \InvalidArgumentException("$dest is not a neighbor of $this");
             return false;
         }
     }
-
-    /**
-     * @brief Calculates the coordinates of neighboring cells.
-     * @return An array of coordinate objects.
-     */
-    abstract public function calculateNeighbors();
 
     /**
      * @brief Validates the value for the property. Intended on being overwritten.
@@ -113,4 +135,11 @@ abstract class Coordinate
     {
         return is_int($value);
     }
+
+    /**
+     * @brief Calculates the coordinates of neighboring cells.
+     * @return An array of coordinate objects.
+     */
+    abstract protected function calculateNeighbors();
+
 }

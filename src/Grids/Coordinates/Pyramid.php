@@ -29,7 +29,7 @@ class Pyramid extends Coordinate
         }
     }
 
-    public function calculateNeighbors()
+    protected function calculateNeighbors()
     {
         return array(
             new Pyramid($this->x - 1, $this->y - 1, $this->level - 1),
