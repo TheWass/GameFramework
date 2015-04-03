@@ -14,6 +14,11 @@
  * * Added functionality for children to restrict coordinate values using the validate function.
  * @version 2.1 - 2015-03-31
  * * Protected calculate neighbors.  getNeighbors should be used to get the neighbors.
+ * @version 3.0 - 2015-04-03
+ * * Moved neighbors back into the Cell.
+ * * After creating unit tests, I realized that the coordinate cannot (and should not) store neighbors.
+ * * Ends up infinitely recursing if neighbors are calculated in the constructor.
+ * * A coordinate, ultimately, is an ID for the cell, and shouldn't be anything else.
  */
 namespace TheWass\GameFramework\Grids\Coordinates;
 /**
@@ -25,13 +30,10 @@ namespace TheWass\GameFramework\Grids\Coordinates;
  */
 abstract class Coordinate
 {
-    private $neighbors;     //Storage object to hold the neighbors and associated weights
-
     public function __construct()
     {
-        //Get list of property names of the child only
-        $properties = array_keys(array_diff_key(get_class_vars(get_class($this)),
-                                                get_class_vars(get_class())));
+        //Get list of property names of the child.
+        $properties = array_keys(get_class_vars(get_class($this)));
         //combine arrays so $property => $value
         if (($toAssign = array_combine($properties, func_get_args()))) {
             //Set properties
@@ -49,15 +51,13 @@ abstract class Coordinate
 
     public function __get($name)
     {
-        if ($name == 'neighbors') {
-            return $this->getNeighbors();
-        } else if (property_exists(get_class($this), $name)) {
+        if (property_exists(get_class($this), $name)) {
             return $this->$name;
         } else {
             throw new \BadMethodCallException("$name is not a valid property.");
         }
     }
-    
+
     //Prevent attribute mutation
     final public function __set($name, $value)
     {
@@ -71,58 +71,7 @@ abstract class Coordinate
 
     public function toArray()
     {
-        return array_diff_key(get_class_vars(get_class($this)),
-                              get_class_vars(get_class()));
-    }
-    
-    private function initializeNeighbors()
-    {
-        $this->neighbors = new \SplObjectStorage();
-        $neighbors = $this->calculateNeighbors();
-        foreach ($neighbors as $neighbor) {
-            $this->neighbors[$neighbor] = 1;
-        }
-    }
-
-    public function getNeighbors()
-    {
-        if (!isset($this->neighbors)) {
-            $this->initializeNeighbors();
-        }
-
-        $neighbors = array();
-        foreach ($this->neighbors as $coord) {
-            $neighbors[] = $coord;
-        }
-        return $neighbors;
-    }
-
-    public function getWeight(Coordinate $dest)
-    {
-        if (!isset($this->neighbors)) {
-            $this->initializeNeighbors();
-        }
-        var_dump($this->neighbors);
-        if ($this->neighbors->contains($dest)) {
-            return $this->neighbors[$dest];
-        } else {
-            throw new \InvalidArgumentException("$dest is not a neighbor of $this");
-            return false;
-        }
-    }
-
-    public function setWeight(Coordinate $dest, $weight)
-    {
-        if (!isset($this->neighbors)) {
-            $this->initializeNeighbors();
-        }
-        if ($this->neighbors->contains($dest)) {
-            $this->neighbors[$dest] = $weight;
-            return $weight;
-        } else {
-            throw new \InvalidArgumentException("$dest is not a neighbor of $this");
-            return false;
-        }
+        return get_object_vars($this);
     }
 
     /**
@@ -140,6 +89,6 @@ abstract class Coordinate
      * @brief Calculates the coordinates of neighboring cells.
      * @return An array of coordinate objects.
      */
-    abstract protected function calculateNeighbors();
+    abstract public function calculateNeighbors();
 
 }

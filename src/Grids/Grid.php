@@ -11,24 +11,24 @@
  * * Reorganized files
  * * Added Namespacing
  * * Fixed doxy-comments
- *
  * @version 1.2 - 2015-03-18
  * * Added parameters to keep track of the cell type and coordinate system
  * * Changed the weight set/get to work off of locations rather than cells.
- *
  * @version 1.3 - 2015-03-23
  * * Decoupled the Cell class.  The grid can now store any type of data.
+ * @version 2.0 - 2015-04-03
+ * * Readded the Cell class.  The cell stores the neighbors and the data. 
  */
 namespace TheWass\GameFramework\Grids;
 
-use TheWass\GameFramework\Interfaces as Interfaces;
+use TheWass\GameFramework\Interfaces\Graph;
 /**
  * @class Grid
  * @author The Wass
  * @brief Abstract class to facilitate constructing a grid
  * @description description
  */
-abstract class Grid extends \SplObjectStorage implements Interfaces\Graph
+abstract class Grid extends \SplObjectStorage implements Graph
 {
     private $coordinateSystem;
 
@@ -93,12 +93,12 @@ abstract class Grid extends \SplObjectStorage implements Interfaces\Graph
         return false;
     }
 
-    public function getWeight(Coordinate $source, Coordinate $destination)
+    public function getWeight(Cell $source, Cell $destination)
     {
         return $source->getWeight($destination);
     }
 
-    public function setWeight(Coordinate $source, Coordinate $destination, $weight)
+    public function setWeight(Cell $source, Cell $destination, $weight)
     {
         return $source->getWeight($destination, $weight);
     }

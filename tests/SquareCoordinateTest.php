@@ -6,6 +6,8 @@
  *
  * @version 1.0 - 2015-03-31
  * * Initial version
+ * @version 2.0 - 2015-04-03
+ * * Removed neighbors
  */
 namespace TheWass\GameFramework\Tests;
 
@@ -17,19 +19,43 @@ use TheWass\GameFramework\Grids\Coordinates\Square;
  */
 class SquareCoordinateTest extends CoordinateTest
 {
+    /**
+     * @brief Initialize *all* protected attributes of this class in the setup function.
+     */
     public function setUp()
     {
-        $this->coordinate   = new Square(0, 0);
-
-        $this->neighbor = new Square(0, 1);
-        $this->notNeighbor = new Square(1, 1);
-        $this->neighbors = array(
-            new Square(1, 0),
-            new Square(0, 1),
-            new Square(-1, 0),
-            new Square(0, -1)
-        );
         $this->components = array('x', 'y');
-        $this->stringRep = '(0, 0)';
+    }
+
+    /**
+     * @brief Provide coordinate objects for testing.
+     * @return array of arrays of coordinate objects
+     */
+    public function coordinateProvider()
+    {
+        return array (
+            array(new Square(1, 1)),
+            array(new Square(0, 1)),
+            array(new Square(1, 0)),
+            array(new Square(0, -1)),
+            array(new Square(-1, 0)),
+            array(new Square(-1, -1))
+        );
+    }
+    
+    /**
+     * @brief Test correct calculation of the neighbors
+     * @dataProvider coordinateProvider
+     */
+    public function testCalculateNeighbors($coordinate)
+    {
+        $expectedNeighbors = array(
+            new Square($coordinate->x, $coordinate->y),
+            new Square($coordinate->x, $coordinate->y),
+            new Square($coordinate->x, $coordinate->y),
+            new Square($coordinate->x, $coordinate->y)
+        );
+        $neighbors = $coordinate->calculateNeighbors();
+        //Incomplete
     }
 }
