@@ -1,7 +1,7 @@
 {
     "name": "TheWass/GameFramework",
     "description": "This sets up basic resources to create grid based games.",
-    "license": "MIT",
+    "license": "GPLv3",
     "require": {},
     "require-dev": {
         "phpunit/phpunit": "*"
