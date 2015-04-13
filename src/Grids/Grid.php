@@ -17,7 +17,8 @@
  * @version 1.3 - 2015-03-23
  * * Decoupled the Cell class.  The grid can now store any type of data.
  * @version 2.0 - 2015-04-03
- * * Readded the Cell class.  The cell stores the neighbors and the data. 
+ * * Readded the Cell class, but left it mostly decoupled.
+ * * The cell stores the neighbors' weights and the cell data.
  */
 namespace TheWass\GameFramework\Grids;
 
@@ -30,7 +31,7 @@ use TheWass\GameFramework\Interfaces\Graph;
  */
 abstract class Grid extends \SplObjectStorage implements Graph
 {
-    private $coordinateSystem;
+    private $coordinateSystem; //used to ensure coordinates are all of the same type.
 
     /**
      * @brief Constructor for the grid.
@@ -93,12 +94,12 @@ abstract class Grid extends \SplObjectStorage implements Graph
         return false;
     }
 
-    public function getWeight(Cell $source, Cell $destination)
+    public function getWeight(Cell $source, Coordinate $destination)
     {
         return $source->getWeight($destination);
     }
 
-    public function setWeight(Cell $source, Cell $destination, $weight)
+    public function setWeight(Cell $source, Coordinate $destination, $weight)
     {
         return $source->getWeight($destination, $weight);
     }

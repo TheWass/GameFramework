@@ -8,6 +8,8 @@
  * * Initial version
  * @version 2.0 - 2015-04-03
  * * Removed neighbors
+ * @version 2.1 - 2015-04-13
+ * * Added expected neighbors
  */
 namespace TheWass\GameFramework\Tests;
 
@@ -16,6 +18,7 @@ use TheWass\GameFramework\Grids\Coordinates\Square;
  * @class SquareCoordinateTest
  * @author The Wass
  * @brief Collection of tests for the Square Coordinate System
+ * @description  This class determines what separates a Square coordinate from any other.
  */
 class SquareCoordinateTest extends CoordinateTest
 {
@@ -29,7 +32,7 @@ class SquareCoordinateTest extends CoordinateTest
 
     /**
      * @brief Provide coordinate objects for testing.
-     * @return array of arrays of coordinate objects
+     * @return array of arrays. Each containing a coordinate object.
      */
     public function coordinateProvider()
     {
@@ -42,20 +45,27 @@ class SquareCoordinateTest extends CoordinateTest
             array(new Square(-1, -1))
         );
     }
-    
+
     /**
-     * @brief Test correct calculation of the neighbors
-     * @dataProvider coordinateProvider
+     * @brief Provide expected neighbor calculations for testing.
+     * @return array of neighbors for the coordinate.
      */
-    public function testCalculateNeighbors($coordinate)
+    public function getExpectedNeighbors($coordinate)
     {
-        $expectedNeighbors = array(
-            new Square($coordinate->x, $coordinate->y),
-            new Square($coordinate->x, $coordinate->y),
-            new Square($coordinate->x, $coordinate->y),
-            new Square($coordinate->x, $coordinate->y)
+        return array(
+            new Square($coordinate->x + 1, $coordinate->y),
+            new Square($coordinate->x, $coordinate->y + 1),
+            new Square($coordinate->x - 1, $coordinate->y),
+            new Square($coordinate->x, $coordinate->y - 1)
         );
-        $neighbors = $coordinate->calculateNeighbors();
-        //Incomplete
+    }
+
+    /**
+     * @brief Test the constructor for an invalid coordinate value
+     * @expectedException InvalidArgumentException
+     */
+    public function testConstructorBadValues()
+    {
+        $inst = new Square('billy', 'bob');
     }
 }

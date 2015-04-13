@@ -16,7 +16,8 @@
  * * Protected calculate neighbors.  getNeighbors should be used to get the neighbors.
  * @version 3.0 - 2015-04-03
  * * Moved neighbors back into the Cell.
- * * After creating unit tests, I realized that the coordinate cannot (and should not) store neighbors.
+ * * Made calculateNeighbors public again.
+ * * After unit testing, I realized that the coordinate cannot (and should not) store neighbors.
  * * Ends up infinitely recursing if neighbors are calculated in the constructor.
  * * A coordinate, ultimately, is an ID for the cell, and shouldn't be anything else.
  */
@@ -35,17 +36,14 @@ abstract class Coordinate
         //Get list of property names of the child.
         $properties = array_keys(get_class_vars(get_class($this)));
         //combine arrays so $property => $value
-        if (($toAssign = array_combine($properties, func_get_args()))) {
-            //Set properties
-            foreach ($toAssign as $prop=>$val) {
-                if ($this->validate($prop, $val)) {
-                    $this->$prop = $val;
-                } else {
-                    throw new \InvalidArgumentException("$val is not valid for $prop");
-                }
+        $toAssign = array_combine($properties, func_get_args());
+        //Set properties
+        foreach ($toAssign as $prop=>$val) {
+            if ($this->validate($prop, $val)) {
+                $this->$prop = $val;
+            } else {
+                throw new \InvalidArgumentException("$val is not valid for $prop");
             }
-        } else {
-            throw new \InvalidArgumentException("Invalid number of arguments passed.  Need ". count($properties));
         }
     }
 

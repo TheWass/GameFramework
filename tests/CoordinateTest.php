@@ -11,6 +11,9 @@
  * * Abstracted the class.
  * @version 2.0 - 2015-04-03
  * * Removed Neighbors: They will be controlled by the Grid, and stored in the Cell.
+ * @version 2.1 - 2015-04-13
+ * * Added verifying neighbor calculations.
+ * * Added Invalid Constructor tests.
  */
 namespace TheWass\GameFramework\Tests;
 /**
@@ -20,6 +23,7 @@ namespace TheWass\GameFramework\Tests;
  * @description  A coordinate must have the following attributes:
  * * Unable to mutate self
  * * Able to get components
+ * * Able to calculate neighbors
  */
 abstract class CoordinateTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,18 +34,24 @@ abstract class CoordinateTest extends \PHPUnit_Framework_TestCase
      * @brief Initialize *all* protected attributes of this class in the setup function.
      */
     public function setUp(){}
-    
+
     /**
      * @brief Provide coordinate objects for testing.
      * @return array of arrays of coordinate objects
      */
     abstract public function coordinateProvider();
-    
+
     /**
-     * @brief Test correct calculation of the neighbors
-     * @dataProvider coordinateProvider
+     * @brief Provide expected neighbor calculations for testing.
+     * @return array of neighbors for the coordinate.
      */
-    abstract public function testCalculateNeighbors($coordinate);
+    abstract public function getExpectedNeighbors($coordinate);
+
+    /**
+     * @brief Test the constructor for an invalid coordinate value
+     * @expectedException InvalidArgumentException
+     */
+    abstract public function testConstructorBadValues();
 
     /**
      * @brief Test the output string looks like a coordinate.
@@ -65,6 +75,18 @@ abstract class CoordinateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @brief Test correct calculation of the neighbors
+     * @dataProvider coordinateProvider
+     */
+    public function testCalculateNeighbors($coordinate)
+    {
+        $expectedNeighbors = $this->getExpectedNeighbors($coordinate);
+        $neighbors = $coordinate->calculateNeighbors();
+        //array_diff checks the string representation of the coordinate.
+        $this->assertEmpty(array_diff($expectedNeighbors, $neighbors));
+    }
+
+    /**
      * @brief Test setting the first component
      * @expectedException BadMethodCallException
      * @dataProvider coordinateProvider
@@ -73,7 +95,7 @@ abstract class CoordinateTest extends \PHPUnit_Framework_TestCase
     {
         $coordinate->{$this->components[0]} = 4;
     }
-    
+
     /**
      * @brief Test adding a new property
      * @expectedException BadMethodCallException
@@ -82,5 +104,15 @@ abstract class CoordinateTest extends \PHPUnit_Framework_TestCase
     public function testSelfMutate($coordinate)
     {
         $coordinate->newProperty = 'bob';
+    }
+
+    /**
+     * @brief Test getting an invalid property
+     * @expectedException BadMethodCallException
+     * @dataProvider coordinateProvider
+     */
+    public function testBadGet($coordinate)
+    {
+        $var = $coordinate->newProperty;
     }
 }
