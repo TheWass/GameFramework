@@ -6,7 +6,6 @@
  *
  * @version 1.0 - 2015-03-18
  * * Initial Version
- *
  * @version 1.1 - 2015-03-23
  * * Modified Class to match the changes to abstract Grid.
  */

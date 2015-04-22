@@ -6,7 +6,6 @@
  *
  * @version 1.0 - 2015-03-02
  * * Initial Version
- *
  * @version 1.1 - 2015-03-13
  * * Reorganized files
  * * Added Namespacing

@@ -5,10 +5,10 @@
     "authors": [
         {
             "name": "The Wass",
-            "email": "",
+            "email": "lord.d35ruct0@gmail.com",
             "role": "Lead developer"
         }
-    ]
+    ],
     "require": {},
     "require-dev": {
         "phpunit/phpunit": "*"

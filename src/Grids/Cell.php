@@ -47,11 +47,11 @@ class Cell
      */
     public function setWeight(Coordinate $destination, $value)
     {
-        if ($value > 1) {
+        if (is_int($value) && $value > 1) {
             $this->neighbors[$destination] = $value;
             return $value;
-        } else if ($value == 1 or $value == 0) {
-            unset($this->neighbors[$destination];
+        } else if ($value === 1 or $value === 0) {
+            unset($this->neighbors[$destination]);
             return 1;
         } else {
             return false;
@@ -65,7 +65,7 @@ class Cell
      */
     public function getWeight(Coordinate $destination)
     {
-        if ($this->neighbors()->contains($destination) {
+        if ($this->neighbors->contains($destination)) {
             return $this->neighbors[$destination];
         } else {
             return false;
