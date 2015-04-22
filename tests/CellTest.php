@@ -28,7 +28,7 @@ class CellTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->test = new Cell();
-        $this->stub = $this getMockforAbstractClass('Coordinate');
+        $this->stub = $this->getMockForAbstractClass('TheWass\GameFramework\Grids\Coordinates\Coordinate');
     }
 
     public function dataProvider()
@@ -36,12 +36,10 @@ class CellTest extends \PHPUnit_Framework_TestCase
         return array(
             array(0),
             array(1),
-            array(42),
             array(-1),
             array('str'),
             array(array(1)),
-            array(array(1, 'str')),
-            array(new stdClass())
+            array(new \stdClass())
         );
     }
 
@@ -52,19 +50,23 @@ class CellTest extends \PHPUnit_Framework_TestCase
     public function testData($data)
     {
         $this->test->property = $data;
-        assertEqual($data, $this->test->property);
+        $this->assertEquals($data, $this->test->property);
     }
 
     /**
      * @brief Test setting and getting neighbor weights.
-     * @dataProvider dataProvider
      */
-    public function testWeight($weight)
+    public function testWeight()
     {
-        assertFalse($this->test->getWeight($this->stub));
-        assertFalse($this->test->getWeight($this->stub));
-
-        $this->markTestIncomplete();//INCOMPLETE!
+        //Test get default weight
+        $this->assertFalse($this->test->getWeight($this->stub));
+        //Test set weight
+        $this->assertFalse($this->test->setWeight($this->stub, -1));
+        $this->assertTrue((boolean)$this->test->setWeight($this->stub, 0));
+        $this->assertTrue((boolean)$this->test->setWeight($this->stub, 1));
+        $this->assertTrue((boolean)$this->test->setWeight($this->stub, 2));
+        //Test get weight
+        $this->assertEquals(2, $this->test->getWeight($this->stub));
     }
 
 }
