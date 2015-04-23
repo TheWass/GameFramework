@@ -7,7 +7,6 @@
  * @version 1.0 - 2015-03-13
  * * Reorganized files
  * * Added Namespacing
- *
  * @version 2.0 - 2015-03-23
  * * Migrated neighbors to this class, pulling it out of the Cell's responsibility.
  * * Added get and set weights
@@ -21,7 +20,7 @@
  * * Ends up infinitely recursing if neighbors are calculated in the constructor.
  * * A coordinate, ultimately, is an ID for the cell, and shouldn't be anything else.
  */
-namespace TheWass\GameFramework\Grids\Coordinates;
+namespace TheWass\GameFramework\Grids;
 /**
  * @class Coordinate
  * @author The Wass
@@ -45,6 +44,10 @@ abstract class Coordinate
                 throw new \InvalidArgumentException("$val is not valid for $prop");
             }
         }
+    }
+
+    protected function __clone()
+    {
     }
 
     public function __get($name)

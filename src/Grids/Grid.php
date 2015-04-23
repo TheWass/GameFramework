@@ -2,104 +2,72 @@
 /**
  * @file Grid.php
  * @author The Wass
- * @brief This file defines a template for a grid.
+ * @brief This file contains an interface for a basic grid functionality.
  *
  * @version 1.0 - 2015-03-02
  * * Initial Version
+ * * Added full documentation
  * @version 1.1 - 2015-03-13
- * * Reorganized files
- * * Added Namespacing
- * * Fixed doxy-comments
- * @version 1.2 - 2015-03-18
- * * Added parameters to keep track of the cell type and coordinate system
- * * Changed the weight set/get to work off of locations rather than cells.
- * @version 1.3 - 2015-03-23
- * * Decoupled the Cell class.  The grid can now store any type of data.
- * @version 2.0 - 2015-04-03
- * * Readded the Cell class, but left it mostly decoupled.
- * * The cell stores the neighbors' weights and the cell data.
+ * * Added the appropriate namespace for autoloading.
  */
 namespace TheWass\GameFramework\Grids;
-
-use TheWass\GameFramework\Interfaces\Graph;
 /**
- * @class Grid
+ * @interface Grid
  * @author The Wass
- * @brief Abstract class to facilitate constructing a grid
- * @description description
+ * @brief Standard interface for a grid datastructure.
+ * @description This is a basic interface for implementing grid data structures.
+ * The difference between a graph and a grid is graphs can dynamically connect and disconnect
+ * nodes.  Grid nodes have fixed neighbors which do not change.
+ * @notice All functions in this interface MUST handle exceptions within the implementing class.
+ * Classes using and trusting this interface should not be held responsible for your garbage.
+ * Make it a custom error instead.
  */
-abstract class Grid extends \SplObjectStorage implements Graph
+interface Grid
 {
-    private $coordinateSystem; //used to ensure coordinates are all of the same type.
+    /**
+     * @brief Tests if there exists at least one arc from $node1 to $node2.
+     * @param $node1 - Source node
+     * @param $node2 - Destination node
+     * @return Boolean True if $node1 is adjacent to $node2.
+     */
+    public function isAdjacent($node1, $node2);
 
     /**
-     * @brief Constructor for the grid.
-     * @param $coordinateSystem - String of the desired Coordinate class
+     * @brief Lists all neighbors for $node
+     * @param $node - Node to query
+     * @return Array(Mixed): An array of neighbors on success. See implementation for type information.
      */
-    public function __construct($coordinateSystem)
-    {
-        if (in_array('Coordinate', class_parents($coordinateSystem))) {
-            $this->coordinateSystem = $coordinateSystem;
-            parent::__construct();
-        } else {
-            throw new InvalidArgumentException("$coordinateSystem must extend the Coordinate class.");
-        }
-    }
+    public function getNeighbors($node);
 
-    ///////////SPLObjectStorage Overwrites//////////////
-    public function offsetSet(Coordinate $coordinate, $data)
-    {
-        if (is_a($coordinate, $this->coordinateSystem)) {
-            parent::offsetSet($coordinate, $data);
-        } else {
-            throw new InvalidArgumentException("$coordinate must be a {$this->coordinateSystem}");
-        }
-    }
+    /**
+     * @brief Returns the node data.
+     * @param $node - Parameter_Description
+     * @return Mixed: False on failure.  Node data on success.
+     */
+    public function getNode($node);
 
-    public function attach(Coordinate $coordinate, $data)
-    {
-        $this->offsetSet($coordinate, $data);
-    }
+    /**
+     * @brief Set the node data.
+     * @param $node  - Node to query
+     * @param $value - Value to set the node
+     * @return Mixed: False on failure.  See implementation for success values.
+     */
+    public function setNode($node, $value);
 
-    ///////////GraphInterface implementation///////////
-    public function isAdjacent(Coordinate $source, Coordinate $destination)
-    {
-        return in_array($destination, $source->getNeighbors());
-    }
+    /**
+     * @brief Gets the weight value of the arc between two nodes.
+     * @param $node1 - Source node
+     * @param $node2 - Destination node
+     * @return Mixed: False on failure.  The weight of the arc on success.
+     */
+    public function getWeight($node1, $node2);
 
-    public function getNeighbors(Coordinate $coordinate)
-    {
-        return $coordinate->getNeighbors();
-    }
-
-    public function getNode(Coordinate $coordinate)
-    {
-        return $this->offsetGet($coordinate);
-    }
-
-    public function setNode(Coordinate $coordinate, $data)
-    {
-        $this->offsetSet($coordinate, $data);
-    }
-
-    //Cannot manually connect or disconnect in a fixed grid.
-    final public function connect($node1, $node2)
-    {
-        return false;
-    }
-
-    final public function disconnect($node1, $node2)
-    {
-        return false;
-    }
-
-    public function getWeight(Cell $source, Coordinate $destination)
-    {
-        return $source->getWeight($destination);
-    }
-
-    public function setWeight(Cell $source, Coordinate $destination, $weight)
-    {
-        return $source->getWeight($destination, $weight);
-    }
+    /**
+     * @brief Sets the weight value of the arc between two nodes.
+     * @param $node1  - Source node
+     * @param $node2  - Destination node
+     * @param $weight - Value to set the arc
+     * @return Mixed: False on failure.  See implementation for success values.
+     */
+    public function setWeight($node1, $node2, $weight);
 }

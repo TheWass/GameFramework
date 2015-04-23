@@ -9,7 +9,7 @@
  * @version 1.1 - 2015-03-23
  * * Modified Class to match the changes to abstract Grid.
  */
-namespace TheWass\GameFramework\Grids;
+namespace TheWass\GameFramework\Grids\Types;
 
 use TheWass\GameFramework\Grids\Coordinates\Square;
 /**
@@ -34,17 +34,9 @@ class Rectangle extends Grid
         parent::__construct('Square');
     }
 
-    public function offsetSet(Square $coordinate, $data)
+    protected function isInGrid(Square $coordinate)
     {
-        if ((abs($coordinate->x) > $width and $width != 0) or
-            (abs($coordinate->y) > $height and $height != 0)) {
-            throw new RangeException("Coordinate is outside of the grid.");
-        }
-        parent::offsetSet($coordinate, $data);
-    }
-
-    public function attach(Square $coordinate, $data)
-    {
-        $this->offsetSet($coordinate, $data);
+        return ((abs($coordinate->x) <= $width or $width == 0) and
+                (abs($coordinate->y) <= $height or $height == 0));
     }
 }

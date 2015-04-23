@@ -4,7 +4,7 @@
  * @author The Wass
  * @brief This file tests the Square Coordinate system
  *
- * @version 1.0 - 2015-04-14
+ * @version 1.0 - 2015-04-23
  * * Initial version
  */
 namespace TheWass\GameFramework\Tests;
@@ -16,16 +16,12 @@ use TheWass\GameFramework\Grids\Square;
  * @brief Collection of tests for the Square Grid System
  * @description  This class determines what separates a Square Grid from any other.
  */
-class SquareGridTest extends GridTest
+class SquareGridTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @brief Initialize *all* protected attributes of this class in the setup function.
      */
     public function setUp()
-    {
-    }
-
-    public function gridProvider()
     {
     }
 

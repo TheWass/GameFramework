@@ -4,7 +4,7 @@
  * @author The Wass
  * @brief This file tests the Grid class
  *
- * @version 1.0 - 2015-04-14
+ * @version 1.0 - 2015-04-23
  * * Initial version
  */
 namespace TheWass\GameFramework\Tests;
@@ -14,25 +14,39 @@ namespace TheWass\GameFramework\Tests;
  * @brief Collection of tests for the Grid data container
  * @description
  */
-abstract class GridTest extends \PHPUnit_Framework_TestCase
+class GridTest extends \PHPUnit_Framework_TestCase
 {
+    private $grid;
 
-    //Expected values
+    public function setUp()
+    {
+        $this->grid = $this->getMockForAbstractClass('TheWass\GameFramework\Grids\Grid');
 
-    /**
-     * @brief Initialize *all* protected attributes of this class in the setup function.
-     */
-    public function setUp(){}
-
-    /**
-     * @brief Provide grid objects for testing.
-     * @return array of arrays of grid objects
-     */
-    abstract public function gridProvider();
+        $this->grid->method('isInGrid')
+             ->willReturn(true);
+    }
 
     /**
-     * @brief Provide coordinate objects for testing.
-     * @return array of arrays of coordinate objects
+     * @brief This creates a TestCoordinate object which has zero properties, and returns itself as its neighbor.
+     * @return TestCoordinate object
      */
-    abstract public function coordinateProvider();
+    public function createMockCoordinate()
+    {
+        $coord = $this->getMockBuilder('TheWass\GameFramework\Grids\Coordinates\Coordinate')
+                      ->setMockClassName('TestCoordinate')
+                      ->disableOriginalConstructor()
+                      ->getMockForAbstractClass();
+
+        $coord->method('calculateNeighbors')
+              ->will($this->returnSelf());
+
+        return $coord;
+    }
+
+    public function testMockCoordinate()
+    {
+        $coordinate = createMockCoordinate();
+        var_dump($coordinate);
+        assertEquals($coordinate, $coordinate->calculateNeighbors);
+    }
 }

@@ -9,7 +9,7 @@
  * @version 1.1 - 2015-03-24
  * * Updated to function with the parent class.
  */
-namespace TheWass\GameFramework\Grids;
+namespace TheWass\GameFramework\Grids\Types;
 /**
  * @class Square
  * @author The Wass

@@ -59,7 +59,7 @@ abstract class CoordinateTest extends \PHPUnit_Framework_TestCase
      */
     public function testString($coordinate)
     {
-        $this->expectOutputRegex('/^\(-?\d+(?:, -?\d+)*\)$/');
+        $this->expectOutputRegex('/^\(-?.+(?:, -?.+)*\)$/');
         print $coordinate;
     }
 

@@ -10,14 +10,16 @@
  * @version 1.1 - 2015-03-23
  * * Modified Class to match the changes to abstract Grid.
  */
-namespace TheWass\GameFramework\Grids;
+namespace TheWass\GameFramework\Grids\Types;
+
+use TheWass\GameFramework\Grids\Coordinates\Axial;
 /**
  * @class Hexagon
  * @author The Wass
  * @brief hexagonal grid with hex cells.
  * @description description
  */
-class Hexagon extends Grid
+class Hexagon extends BaseGrid
 {
     private $radius;
 
@@ -31,16 +33,8 @@ class Hexagon extends Grid
         parent::__construct('Axial');
     }
 
-    public function offsetSet(Coordinates\Axial $coordinate, $data)
+    protected function isInGrid(Axial $coordinate)
     {
-        if ($radius > 0 and ($coordinate->x > $radius or $coordinate->y > $radius)) {
-            throw new RangeException("Coordinate is outside of the grid.");
-        }
-        parent::offsetSet($coordinate, $data);
-    }
-
-    public function attach(Coordinates\Axial $coordinate, $data)
-    {
-        $this->offsetSet($coordinate, $data);
+        return ($radius <= 0 and ($coordinate->x <= $radius and $coordinate->y <= $radius));
     }
 }

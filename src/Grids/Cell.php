@@ -8,8 +8,6 @@
  * * Initial Version
  */
 namespace TheWass\GameFramework\Grids;
-
-use TheWass\GameFramework\Grids\Coordinates\Coordinate;
 /**
  * @class Cell
  * @author The Wass

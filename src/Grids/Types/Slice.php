@@ -9,14 +9,17 @@
  * @version 1.0 - 2015-03-24
  * * Initial Version
  */
-namespace TheWass\GameFramework\Grids;
+namespace TheWass\GameFramework\Grids\Types;
+
+use TheWass\GameFramework\Grid;
+use TheWass\GameFramework\Coordinate;
 /**
  * @class Slice
  * @author The Wass
  * @brief Slice grid with some number of sub grids
  * @description description
  */
-class Slice implements Interfaces\Graph, ArrayAccess
+class Slice implements Grid, ArrayAccess
 {
     protected $grids;
 
@@ -75,17 +78,6 @@ class Slice implements Interfaces\Graph, ArrayAccess
     public function setNode(Coordinate $coordinate, $data)
     {
         $this->offsetSet($coordinate, $data);
-    }
-
-    //Cannot manually connect or disconnect in a fixed grid.
-    final public function connect($node1, $node2)
-    {
-        return false;
-    }
-
-    final public function disconnect($node1, $node2)
-    {
-        return false;
     }
 
     public function getWeight(Coordinate $source, Coordinate $destination)

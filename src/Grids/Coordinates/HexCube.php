@@ -8,6 +8,8 @@
  * * Initial version
  */
 namespace TheWass\GameFramework\Grids\Coordinates;
+
+use TheWass\GameFramework\Grids\Coordinate;
 /**
  * @class HexCube
  * @author The Wass
