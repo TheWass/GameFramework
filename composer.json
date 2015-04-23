@@ -1,6 +1,6 @@
 {
-    "name": "TheWass/GameFramework",
-    "description": "This sets up basic resources to create grid based games.",
+    "name": "TheWass/Grid",
+    "description": "This sets up basic resources to create a grid datastructure.",
     "license": "MIT",
     "authors": [
         {
@@ -15,12 +15,12 @@
     },
     "autoload": {
         "psr-4": {
-            "TheWass\\GameFramework\\": "src/"
+            "TheWass\\Grid\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TheWass\\GameFramework\\Tests\\": "tests/"
+            "TheWass\\Grid\\Tests\\": "tests/"
         }
     }
 }

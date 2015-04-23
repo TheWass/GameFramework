@@ -7,7 +7,7 @@
  * @version 1.0 - 2015-04-23
  * * Initial version
  */
-namespace TheWass\GameFramework\Tests;
+namespace TheWass\Grid\Tests;
 /**
  * @class GridTest
  * @author The Wass
@@ -20,7 +20,15 @@ class GridTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->grid = $this->getMockForAbstractClass('TheWass\GameFramework\Grids\Grid');
+        //Trigger autoloader
+        $this->getMockBuilder('TheWass\Grid\Coordinate')
+             ->setMockClassName('TestCoordinate')
+             ->disableOriginalConstructor()
+             ->getMockForAbstractClass();
+
+        $this->grid = $this->getMockbuilder('TheWass\Grid\Types\BaseGrid')
+                           ->setConstructorArgs(array('TestCoordinate'))
+                           ->getMockForAbstractClass();
 
         $this->grid->method('isInGrid')
              ->willReturn(true);
@@ -32,7 +40,7 @@ class GridTest extends \PHPUnit_Framework_TestCase
      */
     public function createMockCoordinate()
     {
-        $coord = $this->getMockBuilder('TheWass\GameFramework\Grids\Coordinates\Coordinate')
+        $coord = $this->getMockBuilder('TheWass\Grid\Coordinate')
                       ->setMockClassName('TestCoordinate')
                       ->disableOriginalConstructor()
                       ->getMockForAbstractClass();
@@ -45,8 +53,7 @@ class GridTest extends \PHPUnit_Framework_TestCase
 
     public function testMockCoordinate()
     {
-        $coordinate = createMockCoordinate();
-        var_dump($coordinate);
-        assertEquals($coordinate, $coordinate->calculateNeighbors);
+        $coordinate = $this->createMockCoordinate();
+        $this->assertEquals($coordinate, $coordinate->calculateNeighbors());
     }
 }

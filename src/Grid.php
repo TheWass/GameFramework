@@ -10,7 +10,7 @@
  * @version 1.1 - 2015-03-13
  * * Added the appropriate namespace for autoloading.
  */
-namespace TheWass\GameFramework\Grids;
+namespace TheWass\Grid;
 /**
  * @interface Grid
  * @author The Wass
@@ -30,21 +30,21 @@ interface Grid
      * @param $node2 - Destination node
      * @return Boolean True if $node1 is adjacent to $node2.
      */
-    public function isAdjacent($node1, $node2);
+    public function isAdjacent(Coordinate $node1, Coordinate $node2);
 
     /**
      * @brief Lists all neighbors for $node
      * @param $node - Node to query
      * @return Array(Mixed): An array of neighbors on success. See implementation for type information.
      */
-    public function getNeighbors($node);
+    public function getNeighbors(Coordinate $node);
 
     /**
      * @brief Returns the node data.
      * @param $node - Parameter_Description
      * @return Mixed: False on failure.  Node data on success.
      */
-    public function getNode($node);
+    public function getNode(Coordinate $node);
 
     /**
      * @brief Set the node data.
@@ -52,7 +52,7 @@ interface Grid
      * @param $value - Value to set the node
      * @return Mixed: False on failure.  See implementation for success values.
      */
-    public function setNode($node, $value);
+    public function setNode(Coordinate $node, $value);
 
     /**
      * @brief Gets the weight value of the arc between two nodes.
@@ -60,7 +60,7 @@ interface Grid
      * @param $node2 - Destination node
      * @return Mixed: False on failure.  The weight of the arc on success.
      */
-    public function getWeight($node1, $node2);
+    public function getWeight(Cell $node1, Coordinate $node2);
 
     /**
      * @brief Sets the weight value of the arc between two nodes.
@@ -69,5 +69,5 @@ interface Grid
      * @param $weight - Value to set the arc
      * @return Mixed: False on failure.  See implementation for success values.
      */
-    public function setWeight($node1, $node2, $weight);
+    public function setWeight(Cell $node1, Coordinate $node2, $weight);
 }

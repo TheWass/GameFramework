@@ -7,9 +7,9 @@
  * @version 1.0 - 2015-04-23
  * * Initial version
  */
-namespace TheWass\GameFramework\Tests;
+namespace TheWass\Grid\Tests;
 
-use TheWass\GameFramework\Grids\Square;
+use TheWass\Grid\Square;
 /**
  * @class SquareGridTest
  * @author The Wass
@@ -39,6 +39,12 @@ class SquareGridTest extends \PHPUnit_Framework_TestCase
             array(new Square(-1, 0)),
             array(new Square(-1, -1))
         );
+    }
+    
+    public function testIncomplete()
+    {
+        //make phpunit happy
+       $this->assertTrue(true);
     }
 
 }

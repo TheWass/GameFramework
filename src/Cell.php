@@ -7,7 +7,7 @@
  * @version 1.0 - 2015-04-03
  * * Initial Version
  */
-namespace TheWass\GameFramework\Grids;
+namespace TheWass\Grid;
 /**
  * @class Cell
  * @author The Wass

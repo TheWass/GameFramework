@@ -11,9 +11,9 @@
  * @version 2.1 - 2015-04-13
  * * Added expected neighbors
  */
-namespace TheWass\GameFramework\Tests;
+namespace TheWass\Grid\Tests;
 
-use TheWass\GameFramework\Grids\Coordinates\Square;
+use TheWass\Grid\Coordinates\Square;
 /**
  * @class SquareCoordinateTest
  * @author The Wass

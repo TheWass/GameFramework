@@ -9,10 +9,10 @@
  * @version 1.0 - 2015-03-24
  * * Initial Version
  */
-namespace TheWass\GameFramework\Grids\Types;
+namespace TheWass\Grid\Types;
 
-use TheWass\GameFramework\Grid;
-use TheWass\GameFramework\Coordinate;
+use TheWass\Grid\Grid;
+use TheWass\Grid\Coordinate;
 /**
  * @class Slice
  * @author The Wass

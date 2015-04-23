@@ -7,9 +7,9 @@
  * @version 1.0 - 2015-03-18
  * * Initial version
  */
-namespace TheWass\GameFramework\Grids\Coordinates;
+namespace TheWass\Grid\Coordinates;
 
-use TheWass\GameFramework\Grids\Coordinate;
+use TheWass\Grid\Coordinate;
 /**
  * @class Axial
  * @author The Wass

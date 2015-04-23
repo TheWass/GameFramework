@@ -7,9 +7,9 @@
  * @version 1.0 - 2015-04-14
  * * Initial version
  */
-namespace TheWass\GameFramework\Tests;
+namespace TheWass\Grid\Tests;
 
-use TheWass\GameFramework\Grids\Cell;
+use TheWass\Grid\Cell;
 /**
  * @class CellTest
  * @author The Wass
@@ -28,7 +28,7 @@ class CellTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->test = new Cell();
-        $this->stub = $this->getMockForAbstractClass('TheWass\GameFramework\Grids\Coordinates\Coordinate');
+        $this->stub = $this->getMockForAbstractClass('TheWass\Grid\Coordinate');
     }
 
     public function dataProvider()

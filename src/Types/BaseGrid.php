@@ -19,10 +19,11 @@
  * * Readded the Cell class, but left it mostly decoupled.
  * * The cell stores the neighbors' weights and the cell data.
  */
-namespace TheWass\GameFramework\Grids\Types;
+namespace TheWass\Grid\Types;
 
-use TheWass\GameFramework\Grids\Grid;
-use TheWass\GameFramework\Grids\Coordinate;
+use TheWass\Grid\Grid;
+use TheWass\Grid\Coordinate;
+use TheWass\Grid\Cell;
 /**
  * @class BaseGrid
  * @author The Wass
@@ -39,11 +40,12 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
      */
     public function __construct($coordinateSystem)
     {
-        if (in_array('Coordinate', class_parents($coordinateSystem))) {
+        if (in_array('TheWass\Grid\Coordinate', class_parents($coordinateSystem))) {
             $this->coordinateSystem = $coordinateSystem;
-            parent::__construct();
+            //Maybe don't need to call parent constructor?
+            //parent::__construct();
         } else {
-            throw new InvalidArgumentException("$coordinateSystem must extend the Coordinate class.");
+            throw new \InvalidArgumentException("$coordinateSystem must extend the Coordinate class.");
         }
     }
 
@@ -55,20 +57,20 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
     abstract protected function isInGrid(Coordinate $coordinate);
 
     ///////////SPLObjectStorage Overwrites//////////////
-    final public function offsetSet(Coordinate $coordinate, $data = null)
+    final public function offsetSet($coordinate, $data = null)
     {
-        if (is_a($coordinate, $this->coordinateSystem)) {
+        if ($coordinate instanceof $this->coordinateSystem) {
             if (isInGrid($coordinate)){
                 parent::offsetSet($coordinate, $data);
             } else {
                 throw new RangeException("Coordinate is outside of the grid.");
             }
         } else {
-            throw new InvalidArgumentException("$coordinate must be a {$this->coordinateSystem}");
+            throw new \InvalidArgumentException("$coordinate must be a {$this->coordinateSystem}");
         }
     }
 
-    final public function attach(Coordinate $coordinate, $data = null)
+    final public function attach($coordinate, $data = null)
     {
         $this->offsetSet($coordinate, $data);
     }

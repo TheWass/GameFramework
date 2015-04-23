@@ -15,7 +15,7 @@
  * * Added verifying neighbor calculations.
  * * Added Invalid Constructor tests.
  */
-namespace TheWass\GameFramework\Tests;
+namespace TheWass\Grid\Tests;
 /**
  * @class CoordinateTest
  * @author The Wass

@@ -8,9 +8,9 @@
  * * Reorganized files
  * * Added Namespacing
  */
-namespace TheWass\GameFramework\Grids\Coordinates;
+namespace TheWass\Grid\Coordinates;
 
-use TheWass\GameFramework\Grids\Coordinate;
+use TheWass\Grid\Coordinate;
 /**
  * @class Square
  * @author The Wass

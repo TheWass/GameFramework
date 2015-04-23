@@ -20,7 +20,7 @@
  * * Ends up infinitely recursing if neighbors are calculated in the constructor.
  * * A coordinate, ultimately, is an ID for the cell, and shouldn't be anything else.
  */
-namespace TheWass\GameFramework\Grids;
+namespace TheWass\Grid;
 /**
  * @class Coordinate
  * @author The Wass

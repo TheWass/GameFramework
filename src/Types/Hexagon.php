@@ -10,9 +10,9 @@
  * @version 1.1 - 2015-03-23
  * * Modified Class to match the changes to abstract Grid.
  */
-namespace TheWass\GameFramework\Grids\Types;
+namespace TheWass\Grid\Types;
 
-use TheWass\GameFramework\Grids\Coordinates\Axial;
+use TheWass\Grid\Coordinates\Axial;
 /**
  * @class Hexagon
  * @author The Wass
