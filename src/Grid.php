@@ -25,23 +25,23 @@ namespace TheWass\Grid;
 interface Grid
 {
     /**
-     * @brief Tests if there exists at least one arc from $node1 to $node2.
-     * @param $node1 - Source node
-     * @param $node2 - Destination node
-     * @return Boolean True if $node1 is adjacent to $node2.
+     * @brief Tests if there exists at least one arc from $source to $destination.
+     * @param $source - Source node
+     * @param $destination - Destination node
+     * @return Boolean True if $source is adjacent to $destination.
      */
-    public function isAdjacent(Coordinate $node1, Coordinate $node2);
+    public function isAdjacent(Coordinate $source, Coordinate $destination);
 
     /**
      * @brief Lists all neighbors for $node
      * @param $node - Node to query
-     * @return Array(Mixed): An array of neighbors on success. See implementation for type information.
+     * @return Array(Coordinate): An array of neighbors on success. See implementation for type information.
      */
     public function getNeighbors(Coordinate $node);
 
     /**
      * @brief Returns the node data.
-     * @param $node - Parameter_Description
+     * @param $node - Node to query
      * @return Mixed: False on failure.  Node data on success.
      */
     public function getNode(Coordinate $node);
@@ -56,18 +56,18 @@ interface Grid
 
     /**
      * @brief Gets the weight value of the arc between two nodes.
-     * @param $node1 - Source node
-     * @param $node2 - Destination node
+     * @param $source - Source node
+     * @param $destination - Destination node
      * @return Mixed: False on failure.  The weight of the arc on success.
      */
-    public function getWeight(Cell $node1, Coordinate $node2);
+    public function getWeight(Cell $source, Coordinate $destination);
 
     /**
      * @brief Sets the weight value of the arc between two nodes.
-     * @param $node1  - Source node
-     * @param $node2  - Destination node
+     * @param $source  - Source node
+     * @param $destination  - Destination node
      * @param $weight - Value to set the arc
      * @return Mixed: False on failure.  See implementation for success values.
      */
-    public function setWeight(Cell $node1, Coordinate $node2, $weight);
+    public function setWeight(Cell $source, Coordinate $destination, $weight);
 }

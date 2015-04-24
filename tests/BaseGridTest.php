@@ -1,30 +1,27 @@
 <?php
 /**
- * @file GridTest.php
+ * @file BaseGridTest.php
  * @author The Wass
- * @brief This file tests the Grid class
+ * @brief This file tests the BaseGrid class
  *
  * @version 1.0 - 2015-04-23
  * * Initial version
  */
 namespace TheWass\Grid\Tests;
 /**
- * @class GridTest
+ * @class BaseGridTest
  * @author The Wass
  * @brief Collection of tests for the Grid data container
  * @description
  */
-class GridTest extends \PHPUnit_Framework_TestCase
+class BaseGridTest extends \PHPUnit_Framework_TestCase
 {
     private $grid;
 
     public function setUp()
     {
         //Trigger autoloader
-        $this->getMockBuilder('TheWass\Grid\Coordinate')
-             ->setMockClassName('TestCoordinate')
-             ->disableOriginalConstructor()
-             ->getMockForAbstractClass();
+        $this->createMockCoordinate();
 
         $this->grid = $this->getMockbuilder('TheWass\Grid\Types\BaseGrid')
                            ->setConstructorArgs(array('TestCoordinate'))
