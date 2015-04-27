@@ -14,7 +14,7 @@
     },
     "autoload": {
         "psr-4": {
-            "TheWass\\Grid\\": "src/"
+            "TheWass\\Grid\\": "src/",
             "TheWass\\Grid\\Tests\\": "tests/"
         }
     }
