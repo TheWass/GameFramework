@@ -42,6 +42,16 @@ class CellTest extends \PHPUnit_Framework_TestCase
             array(new \stdClass())
         );
     }
+    
+    public function weightProvider()
+    {
+        return array(
+            array(-1, false),
+            array(0, false),
+            array(1, false),
+            array(2, 2)
+        );
+    }
 
     /**
      * @brief Test setting and getting cell data using properties.
@@ -55,18 +65,15 @@ class CellTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @brief Test setting and getting neighbor weights.
+     * @dataProvider weightProvider
      */
-    public function testWeight()
+    public function testWeight($weight, $expected)
     {
         //Test get default weight
         $this->assertFalse($this->test->getWeight($this->stub));
-        //Test set weight
-        $this->assertFalse($this->test->setWeight($this->stub, -1));
-        $this->assertTrue((boolean)$this->test->setWeight($this->stub, 0));
-        $this->assertTrue((boolean)$this->test->setWeight($this->stub, 1));
-        $this->assertTrue((boolean)$this->test->setWeight($this->stub, 2));
-        //Test get weight
-        $this->assertEquals(2, $this->test->getWeight($this->stub));
+        //Test weight
+        $this->test->setWeight($this->stub, $weight);
+        $this->assertSame($expected, $this->test->getWeight($this->stub));
     }
 
 }

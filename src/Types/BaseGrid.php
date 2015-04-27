@@ -18,6 +18,8 @@
  * @version 2.0 - 2015-04-03
  * * Readded the Cell class, but left it mostly decoupled.
  * * The cell stores the neighbors' weights and the cell data.
+ * @version 2.1 - 2015-04-27
+ * * Assertified the if statements that checked type.
  */
 namespace TheWass\Grid\Types;
 
@@ -28,7 +30,9 @@ use TheWass\Grid\Cell;
  * @class BaseGrid
  * @author The Wass
  * @brief Abstract class to facilitate constructing a grid
- * @description description
+ * @description This is a basic template for implementing grid data structures.
+ * The difference between a graph and a grid is graphs can dynamically connect and disconnect
+ * nodes. Grid nodes have fixed neighbors which do not change.
  */
 abstract class BaseGrid extends \SplObjectStorage implements Grid
 {
@@ -40,11 +44,8 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
      */
     public function __construct($coordinateSystem)
     {
-        if (in_array('TheWass\Grid\Coordinate', class_parents($coordinateSystem))) {
-            $this->coordinateSystem = $coordinateSystem;
-        } else {
-            throw new \InvalidArgumentException("$coordinateSystem must extend the Coordinate class.");
-        }
+        assert('in_array(\'TheWass\Grid\Coordinate\', class_parents($coordinateSystem))');
+        $this->coordinateSystem = $coordinateSystem;
     }
 
     /**
@@ -52,20 +53,27 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
      * @param $coordinate - The coordinate to test
      * @return Boolean True if the coordinate lies within the grid; False if it does not.
      */
-    abstract protected function isInGrid(Coordinate $coordinate);
+    abstract protected function isInGridRange(Coordinate $coordinate);
 
     ///////////SPLObjectStorage Overwrites//////////////
     final public function offsetSet($coordinate, $data = null)
     {
-        if ($coordinate instanceof $this->coordinateSystem) {
-            if (isInGrid($coordinate)){
-                parent::offsetSet($coordinate, $data);
-            } else {
-                throw new RangeException("Coordinate is outside of the grid.");
-            }
+        assert('$coordinate instanceof $this->coordinateSystem');
+        assert('$data instanceof \'Cell\'');
+        if (isInGridRange($coordinate)) {
+            parent::offsetSet($coordinate, $data);
         } else {
-            throw new \InvalidArgumentException("$coordinate must be a {$this->coordinateSystem}");
+            throw new RangeException("Coordinate is outside of the grid.");
         }
+    }
+
+    public function offsetGet($coordinate)
+    {
+        assert('$coordinate instanceof $this->coordinateSystem');
+        if (!$this->offsetExists($coordinate)) {
+            $this->offsetSet($coordinate);
+        }
+        parent::offsetGet($coordinate);
     }
 
     final public function attach($coordinate, $data = null)
@@ -73,7 +81,7 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
         $this->offsetSet($coordinate, $data);
     }
 
-    ///////////GraphInterface implementation///////////
+    //////////////////Grid Interface////////////////////////
     public function isAdjacent(Coordinate $source, Coordinate $destination)
     {
         return in_array($destination, $source->calculateNeighbors());
@@ -84,23 +92,28 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
         return $coordinate->calculateNeighbors();
     }
 
-    public function getNode(Coordinate $coordinate)
+    public function getCell(Coordinate $coordinate)
     {
         return $this->offsetGet($coordinate);
     }
 
-    public function setNode(Coordinate $coordinate, $data)
+    public function setCell(Coordinate $coordinate, Cell $data)
     {
         $this->offsetSet($coordinate, $data);
     }
 
-    public function getWeight(Cell $source, Coordinate $destination)
+    public function getWeight(Coordinate $source, Coordinate $destination)
     {
-        return $source->getWeight($destination);
+        if ($this->isAdjacent($source, $destination)) {
+            //Since they are adjacent, if getWeight returns false, then the weight is 1.
+            return (getCell($source)->getWeight($destination)) ?: 1;
+        } else {
+            return false;
+        }
     }
 
-    public function setWeight(Cell $source, Coordinate $destination, $weight)
+    public function setWeight(Coordinate $source, Coordinate $destination, $weight)
     {
-        return $source->setWeight($destination, $weight);
+        getCell($source)->setWeight($destination, $weight);
     }
 }
