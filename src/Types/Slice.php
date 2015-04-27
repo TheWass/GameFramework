@@ -58,15 +58,15 @@ class Slice implements Grid, ArrayAccess
         $this->offsetUnset($coordinate);
     }
 
-    ///////////GraphInterface implementation///////////
+    ///////////Grid implementation///////////
     public function isAdjacent(Coordinate $source, Coordinate $destination)
     {
-        return in_array($destination, $source->getNeighbors());
+        return in_array($destination, $source->calculateNeighbors());
     }
 
     public function getNeighbors(Coordinate $coordinate)
     {
-        return $coordinate->getNeighbors();
+        return $coordinate->calculateNeighbors();
     }
 
     public function getNode(Coordinate $coordinate)
@@ -79,13 +79,13 @@ class Slice implements Grid, ArrayAccess
         $this->offsetSet($coordinate, $data);
     }
 
-    public function getWeight(Coordinate $source, Coordinate $destination)
+    public function getWeight(Cell $source, Coordinate $destination)
     {
         return $source->getWeight($destination);
     }
 
-    public function setWeight(Coordinate $source, Coordinate $destination, $weight)
+    public function setWeight(Cell $source, Coordinate $destination, $weight)
     {
-        return $source->getWeight($destination, $weight);
+        return $source->setWeight($destination, $weight);
     }
 }
