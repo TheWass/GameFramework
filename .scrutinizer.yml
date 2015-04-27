@@ -1,2 +1,16 @@
+checks:
+    php:
+        remove_extra_empty_lines: true
+        return_doc_comments: true
+        parameter_doc_comments: true
+        newline_at_end_of_file: true
+coding_style:
+    php:
+        upper_lower_casing:
+            keywords:
+                general: lower
 tools:
-  external_code_coverage: true
+    external_code_coverage: true
+filter:
+    excluded_paths:
+        - 'tests/*'
