@@ -1,4 +1,7 @@
 #Grid
+Travis: [![Travis Status](https://travis-ci.org/TheWass/Grid.svg?branch=master)](https://travis-ci.org/TheWass/Grid.svg?branch=master)  
+Scrutinizer: [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/TheWass/Grid/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/TheWass/Grid/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/TheWass/Grid/badges/build.png?b=master)](https://scrutinizer-ci.com/g/TheWass/Grid/build-status/master)
+
 This is my implementation of a grid.  This grid is designed to be used in 2D or 3D games as a datastructure.
 
 The grid is similar to a graph in function, however the grid's neighboring nodes are immutable.
