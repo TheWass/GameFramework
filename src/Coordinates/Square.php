@@ -16,6 +16,8 @@ use TheWass\Grid\Coordinate;
  * @author The Wass
  * @brief Class which tesselates into a square grid.
  * @description description
+ * @property-read integer $x
+ * @property-read integer $y
  */
 class Square extends Coordinate
 {

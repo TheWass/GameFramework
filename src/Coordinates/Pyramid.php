@@ -15,6 +15,9 @@ use TheWass\Grid\Coordinate;
  * @author The Wass
  * @brief Class which tesselates into a Pyramid-like grid.
  * @description description
+ * @property-read integer $x
+ * @property-read integer $y
+ * @property-read integer $level
  */
 class Pyramid extends Coordinate
 {

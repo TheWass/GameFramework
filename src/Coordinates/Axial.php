@@ -15,6 +15,8 @@ use TheWass\Grid\Coordinate;
  * @author The Wass
  * @brief Class which tesselates into a Hex grid.
  * @description description
+ * @property-read integer $x
+ * @property-read integer $y
  */
 class Axial extends Coordinate
 {
@@ -35,7 +37,7 @@ class Axial extends Coordinate
 
     public function toHexCube()
     {
-        $z = 0 - $x - $y;
+        $z = 0 - $this->x - $this->y;
         return new HexCube($this->x, $this->y, $z);
     }
 }
