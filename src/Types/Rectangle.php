@@ -11,7 +11,7 @@
  */
 namespace TheWass\Grid\Types;
 
-use TheWass\Grid\Coordinates\Square;
+use TheWass\Grid\Coordinates\Square as SquareCoordinate;
 /**
  * @class Rectangle
  * @author The Wass
@@ -27,16 +27,17 @@ class Rectangle extends Grid
      * @brief Creates a rectangle grid
      * @param $width  - Maximum width  - 0 is infinite
      * @param $height - Maximum height - 0 is infinite
-     * @return rectangle grid object
      */
     public function __construct($width = 0, $height = 0)
     {
         parent::__construct('Square');
+        $this->width = $width;
+        $this->height = $height;
     }
 
-    protected function isInGrid(Square $coordinate)
+    protected function isInGrid(SquareCoordinate $coordinate)
     {
-        return ((abs($coordinate->x) <= $width or $width == 0) and
-                (abs($coordinate->y) <= $height or $height == 0));
+        return ((abs($coordinate->x) <= $this->width || $this->width == 0) &&
+                (abs($coordinate->y) <= $this->height || $this->height == 0));
     }
 }

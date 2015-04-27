@@ -25,7 +25,7 @@ class Pyramid extends Coordinate
     public function validate($property, $value)
     {
         if (strtolower($property) == 'level') {
-            return (is_int($value) and $value >= 0);
+            return (is_int($value) && $value >= 0);
         } else {
             return is_int($value);
         }

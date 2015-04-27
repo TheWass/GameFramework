@@ -42,8 +42,6 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
     {
         if (in_array('TheWass\Grid\Coordinate', class_parents($coordinateSystem))) {
             $this->coordinateSystem = $coordinateSystem;
-            //Maybe don't need to call parent constructor?
-            //parent::__construct();
         } else {
             throw new \InvalidArgumentException("$coordinateSystem must extend the Coordinate class.");
         }
@@ -78,12 +76,12 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
     ///////////GraphInterface implementation///////////
     public function isAdjacent(Coordinate $source, Coordinate $destination)
     {
-        return in_array($destination, $source->getNeighbors());
+        return in_array($destination, $source->calculateNeighbors());
     }
 
     public function getNeighbors(Coordinate $coordinate)
     {
-        return $coordinate->getNeighbors();
+        return $coordinate->calculateNeighbors();
     }
 
     public function getNode(Coordinate $coordinate)
@@ -103,6 +101,6 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
 
     public function setWeight(Cell $source, Coordinate $destination, $weight)
     {
-        return $source->getWeight($destination, $weight);
+        return $source->setWeight($destination, $weight);
     }
 }

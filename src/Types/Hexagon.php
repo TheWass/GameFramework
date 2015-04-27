@@ -26,7 +26,6 @@ class Hexagon extends BaseGrid
     /**
      * @brief Creates a Hexagonal grid
      * @param $radius - Maximum radius - 0 is infinite
-     * @return hexagon grid object
      */
     public function __construct($radius = 0)
     {
@@ -35,6 +34,6 @@ class Hexagon extends BaseGrid
 
     protected function isInGrid(Axial $coordinate)
     {
-        return ($radius <= 0 and ($coordinate->x <= $radius and $coordinate->y <= $radius));
+        return ($this->radius <= 0 && ($coordinate->x <= $this->radius && $coordinate->y <= $this->radius));
     }
 }

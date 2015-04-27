@@ -26,48 +26,48 @@ interface Grid
 {
     /**
      * @brief Tests if there exists at least one arc from $source to $destination.
-     * @param $source - Source node
-     * @param $destination - Destination node
-     * @return Boolean True if $source is adjacent to $destination.
+     * @param Coordinate $source - Source node
+     * @param Coordinate $destination - Destination node
+     * @return boolean True if $source is adjacent to $destination.
      */
     public function isAdjacent(Coordinate $source, Coordinate $destination);
 
     /**
      * @brief Lists all neighbors for $node
-     * @param $node - Node to query
-     * @return Array(Coordinate): An array of neighbors on success. See implementation for type information.
+     * @param Coordinate $node - Node to query
+     * @return Coordinate[] - An array of neighbors on success. See implementation for type information.
      */
     public function getNeighbors(Coordinate $node);
 
     /**
      * @brief Returns the node data.
-     * @param $node - Node to query
-     * @return Mixed: False on failure.  Node data on success.
+     * @param Coordinate $node - Node to query
+     * @return Cell|false
      */
     public function getNode(Coordinate $node);
 
     /**
-     * @brief Set the node data.
-     * @param $node  - Node to query
-     * @param $value - Value to set the node
-     * @return Mixed: False on failure.  See implementation for success values.
+     * @brief Set the node data. (returns $value on success)
+     * @param Coordinate $node - Node to query
+     * @param integer $value - Value to set the node
+     * @return integer|false
      */
     public function setNode(Coordinate $node, $value);
 
     /**
      * @brief Gets the weight value of the arc between two nodes.
-     * @param $source - Source node
-     * @param $destination - Destination node
-     * @return Mixed: False on failure.  The weight of the arc on success.
+     * @param Coordinate $source - Source node
+     * @param Coordinate $destination - Destination node
+     * @return integer|false
      */
     public function getWeight(Cell $source, Coordinate $destination);
 
     /**
-     * @brief Sets the weight value of the arc between two nodes.
-     * @param $source  - Source node
-     * @param $destination  - Destination node
-     * @param $weight - Value to set the arc
-     * @return Mixed: False on failure.  See implementation for success values.
+     * @brief Sets the weight value of the arc between two nodes. (returns $weight on success)
+     * @param Coordinate $source - Source node
+     * @param Coordinate $destination - Destination node
+     * @param integer $weight - Value to set the arc
+     * @return integer|false
      */
     public function setWeight(Cell $source, Coordinate $destination, $weight);
 }

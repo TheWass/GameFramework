@@ -77,8 +77,8 @@ abstract class Coordinate
 
     /**
      * @brief Validates the value for the property. Intended on being overwritten.
-     * @param $property - Property to be tested
-     * @param $value    - Value to be tested
+     * @param string $property - Property to be tested
+     * @param mixed $value    - Value to be tested
      * @return Boolean
      */
     public function validate($property, $value)
@@ -88,7 +88,7 @@ abstract class Coordinate
 
     /**
      * @brief Calculates the coordinates of neighboring cells.
-     * @return An array of coordinate objects.
+     * @return Coordinate[] - Array of the neighboring coordinates.
      */
     abstract public function calculateNeighbors();
 

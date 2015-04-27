@@ -39,16 +39,16 @@ class Cell
 
     /**
      * @brief Sets the neighbor's weight
-     * @param $destination - Neighboring coordinate
-     * @param $value      - The weight
-     * @return The set weight on success or false on failure.
+     * @param Coordinate $destination - Neighboring coordinate
+     * @param integer $value - The weight
+     * @return integer|false - The set weight on success or false on failure.
      */
     public function setWeight(Coordinate $destination, $value)
     {
         if (is_int($value) && $value > 1) {
             $this->neighbors[$destination] = $value;
             return $value;
-        } else if ($value === 1 or $value === 0) {
+        } else if ($value === 1 || $value === 0) {
             unset($this->neighbors[$destination]);
             return 1;
         } else {
@@ -58,8 +58,8 @@ class Cell
 
     /**
      * @brief Gets the neighbor's weight
-     * @param $destination - Neighboring coordinate
-     * @return The set weight or false if not in the list.
+     * @param Coordinate $destination - Neighboring coordinate
+     * @return integer|false - The set weight or false if not in the list.
      */
     public function getWeight(Coordinate $destination)
     {

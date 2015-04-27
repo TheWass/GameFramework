@@ -27,7 +27,6 @@ class Slice implements Grid, ArrayAccess
      * @brief Creates a grid with many slices
      * @param $slices      - Number of slices in the grid
      * @param $subGridType - Desired Grid class name
-     * @return Slice grid object
      */
     public function __construct($slices, $subGridType)
     {
@@ -54,7 +53,7 @@ class Slice implements Grid, ArrayAccess
         $this->offsetSet($coordinate, $data);
     }
 
-    public detach (Coordinate $coordinate)
+    public function detach (Coordinate $coordinate)
     {
         $this->offsetUnset($coordinate);
     }
