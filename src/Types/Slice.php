@@ -69,12 +69,12 @@ class Slice implements Grid, ArrayAccess
         return $coordinate->calculateNeighbors();
     }
 
-    public function getNode(Coordinate $coordinate)
+    public function getCell(Coordinate $coordinate)
     {
         return $this->offsetGet($coordinate);
     }
 
-    public function setNode(Coordinate $coordinate, $data)
+    public function setCell(Coordinate $coordinate, $data)
     {
         $this->offsetSet($coordinate, $data);
     }

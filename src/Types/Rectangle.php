@@ -18,7 +18,7 @@ use TheWass\Grid\Coordinates\Square as SquareCoordinate;
  * @brief Rectangle grid with square cells.
  * @description description
  */
-class Rectangle extends Grid
+class Rectangle extends BaseGrid
 {
     protected $width;
     protected $height;
@@ -35,7 +35,7 @@ class Rectangle extends Grid
         $this->height = $height;
     }
 
-    protected function isInGrid(SquareCoordinate $coordinate)
+    protected function isInGridRange(SquareCoordinate $coordinate)
     {
         return ((abs($coordinate->x) <= $this->width || $this->width == 0) &&
                 (abs($coordinate->y) <= $this->height || $this->height == 0));

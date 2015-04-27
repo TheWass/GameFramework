@@ -9,9 +9,6 @@
             "role": "Lead developer"
         }
     ],
-    "require": {
-        "phpunit/phpunit": "*"
-    },
     "autoload": {
         "psr-4": {
             "TheWass\\Grid\\": "src/",
