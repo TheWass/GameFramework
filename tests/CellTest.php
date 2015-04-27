@@ -46,7 +46,6 @@ class CellTest extends \PHPUnit_Framework_TestCase
     public function weightProvider()
     {
         return array(
-            array(-1, false),
             array(0, false),
             array(1, false),
             array(2, 2)
@@ -74,6 +73,15 @@ class CellTest extends \PHPUnit_Framework_TestCase
         //Test weight
         $this->test->setWeight($this->stub, $weight);
         $this->assertSame($expected, $this->test->getWeight($this->stub));
+    }
+
+    /**
+     * @brief Test setting a negative weight.
+     * @expectedException RangeException
+     */
+    public function testNegativeWeight()
+    {
+        $this->test->setWeight($this->stub, -1);
     }
 
 }

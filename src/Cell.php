@@ -40,14 +40,18 @@ class Cell
     /**
      * @brief Sets the neighbor's weight
      * @param Coordinate $destination - Neighboring coordinate
-     * @param integer $value - The weight
+     * @param integer $value - Weight, can only be positive.
      * @return void
      */
     public function setWeight(Coordinate $destination, $value)
     {
-        if (is_int($value) && $value > 1) {
+        assert('is_int($value)');
+        if ($value < 0) {
+            throw new RangeException("$value must be positive.")
+        }
+        if ($value > 1) {
             $this->neighbors[$destination] = $value;
-        } else if ($value === 1 || $value === 0) {
+        } else {
             unset($this->neighbors[$destination]);
         }
     }
