@@ -59,11 +59,11 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
     final public function offsetSet($coordinate, $data = null)
     {
         assert('$coordinate instanceof $this->coordinateSystem');
-        assert('$data instanceof \'Cell\'');
-        if (isInGridRange($coordinate)) {
+        assert('$data instanceof TheWass\Grid\Cell');
+        if ($this->isInGridRange($coordinate)) {
             parent::offsetSet($coordinate, $data);
         } else {
-            throw new RangeException("Coordinate is outside of the grid.");
+            throw new \RangeException("Coordinate is outside of the grid.");
         }
     }
 
@@ -71,9 +71,10 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
     {
         assert('$coordinate instanceof $this->coordinateSystem');
         if (!$this->offsetExists($coordinate)) {
-            $this->offsetSet($coordinate);
+            $data = new Cell();
+            $this->offsetSet($coordinate, $data);
         }
-        parent::offsetGet($coordinate);
+        return clone parent::offsetGet($coordinate);
     }
 
     final public function attach($coordinate, $data = null)
@@ -84,7 +85,7 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
     //////////////////Grid Interface////////////////////////
     public function isAdjacent(Coordinate $source, Coordinate $destination)
     {
-        return in_array($destination, $source->calculateNeighbors());
+        return in_array($destination, $this->getNeighbors($source));
     }
 
     public function getNeighbors(Coordinate $coordinate)

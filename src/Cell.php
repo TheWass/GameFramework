@@ -6,6 +6,8 @@
  *
  * @version 1.0 - 2015-04-03
  * * Initial Version
+ * @version 2.0 - 2015-04-28
+ * * Added ArrayAccess.
  */
 namespace TheWass\Grid;
 /**
@@ -17,7 +19,7 @@ namespace TheWass\Grid;
  * The neighbors are only stored if the weight is not the default (1).
  * Weights cannot be 0 or negative.
  */
-class Cell
+class Cell implements \ArrayAccess
 {
     private $neighbors;
     private $data;
@@ -25,16 +27,28 @@ class Cell
     public function __construct()
     {
         $this->neighbors = new \SplObjectStorage();
+        $this->data = array();
     }
+
+    public function __isset($name)
+    {
+        return isset($this->data[$name]);
+    }
+
+    public function __get($name)
+    {
+        return $this->data[$name];
+    }
+
 
     public function __set($name, $value)
     {
         $this->data[$name] = $value;
     }
 
-    public function __get($name)
+    public function __unset($name)
     {
-        return $this->data[$name];
+        unset($this->data[$name]);
     }
 
     /**
@@ -70,5 +84,25 @@ class Cell
         } else {
             return false;
         }
+    }
+
+    public function offsetExists($offset)
+    {
+        return $this->__isset($offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->__get($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->__set($offset, $value);
+    }
+
+    public function offsetUnset($offset)
+    {
+        $this->__unset($offset);
     }
 }

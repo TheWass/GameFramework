@@ -53,7 +53,7 @@ class Slice implements Grid, ArrayAccess
         $this->offsetSet($coordinate, $data);
     }
 
-    public function detach (Coordinate $coordinate)
+    public function detach(Coordinate $coordinate)
     {
         $this->offsetUnset($coordinate);
     }

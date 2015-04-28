@@ -46,10 +46,6 @@ abstract class Coordinate
         }
     }
 
-    protected function __clone()
-    {
-    }
-
     public function __get($name)
     {
         if (property_exists(get_class($this), $name)) {

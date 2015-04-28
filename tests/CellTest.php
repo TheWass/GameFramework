@@ -53,13 +53,26 @@ class CellTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @brief Test setting and getting cell data using properties.
+     * @brief Test setting and getting cell data.
      * @dataProvider dataProvider
      */
     public function testData($data)
     {
+        //Test Magic
+        $this->assertFalse(isset($this->test->property));
         $this->test->property = $data;
         $this->assertEquals($data, $this->test->property);
+        unset($this->test->property);
+
+        //Test ArrayAccess
+        $this->assertFalse(isset($this->test['property']));
+        $this->test['property'] = $data;
+        $this->assertEquals($data, $this->test['property']);
+        unset($this->test['property']);
+        
+        //Test same data
+        $this->test->property = $data;
+        $this->assertSame($this->test->property, $this->test['property']);
     }
 
     /**
@@ -83,5 +96,4 @@ class CellTest extends \PHPUnit_Framework_TestCase
     {
         $this->test->setWeight($this->stub, -1);
     }
-
 }
