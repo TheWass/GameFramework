@@ -47,7 +47,7 @@ class Cell
     {
         assert('is_int($value)');
         if ($value < 0) {
-            throw new RangeException("$value must be positive.")
+            throw new \RangeException("$value must be positive.");
         } elseif ($value > 1) {
             $this->neighbors[$destination] = $value;
         } else {
