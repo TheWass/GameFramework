@@ -45,7 +45,7 @@ class BaseGridTest extends \PHPUnit_Framework_TestCase
                       ->disableOriginalConstructor()
                       ->getMockForAbstractClass();
         $coord->method('calculateNeighbors')
-              ->will($this->returnSelf());
+              ->will($this->returnValue(array($coord)));
         return $coord;
     }
 
@@ -55,7 +55,7 @@ class BaseGridTest extends \PHPUnit_Framework_TestCase
     public function testMockCoordinate()
     {
         $coordinate = $this->createMockCoordinate();
-        $this->assertEquals($coordinate, $coordinate->calculateNeighbors());
+        $this->assertEquals(array($coordinate), $coordinate->calculateNeighbors());
         $coordinate2 = $this->createMockCoordinate();
         $this->assertNotSame($coordinate, $coordinate2); //Not the same instance
         $this->assertEquals($coordinate, $coordinate2);  //Equivalent instances
@@ -73,7 +73,7 @@ class BaseGridTest extends \PHPUnit_Framework_TestCase
         //Test equivalence
         $this->assertEquals($cell, $this->grid->getCell($origin));
         $this->assertNotSame($cell, $this->grid->getCell($origin));
-        
+
         $cell = new Cell();
         //Test setting Cell
         $this->grid->setCell($origin, $cell);
@@ -102,7 +102,7 @@ class BaseGridTest extends \PHPUnit_Framework_TestCase
         $this->grid[$coord] = $cell;
         $this->assertNotSame($this->grid[$origin], $this->grid[$coord]);
     }
-    
+
     /**
      * @brief Modifying the cell without setting the grid should not modify the grid.
      */
@@ -113,12 +113,19 @@ class BaseGridTest extends \PHPUnit_Framework_TestCase
         $cell = $this->grid[$origin];
         $cell['attrib'] = 'test';
         $this->assertNotEquals($cell, $this->grid[$origin]);
-        
+
         $cell = new Cell();
         $this->grid->attach($origin, $cell);
-        
+        $cell['attrib'] = 'test';
+        $this->assertNotEquals($cell, $this->grid[$origin]);
+
+        $this->grid[$origin] = $cell;
+        $this->assertEquals($cell, $this->grid[$origin]);
+
+        $cell['attrib'] = 'moarTest';
+        $this->assertNotEquals($cell, $this->grid[$origin]);
     }
-    
+
     /**
      * @brief Test setting a coordinate outside of the grid range.
      * @expectedException RangeException
@@ -133,36 +140,55 @@ class BaseGridTest extends \PHPUnit_Framework_TestCase
              ->method('isInGridRange')
              ->with($this->anything())
              ->willReturn(false);
-        
+
         $origin = $this->createMockCoordinate();
         $cell = new Cell();
         $grid->setCell($origin, $cell);
     }
-    
     /**
-     * @brief Test getting neighbors.
-     */
-    public function testNeighbors()
-    {
-        $origin = $this->createMockCoordinate();
-        $this->assertEquals($origin, $this->grid->getNeighbors($origin));
-    }
-    
-    /**
-     * @brief Test Adjacency.
+     * @brief Test Adjacency.  Also tests neighbors.
      */
     public function testAdjacency()
     {
         $origin = $this->createMockCoordinate();
-        $this->assertEquals($origin, $this->grid->getNeighbors($origin));
+        $coord = $this->createMockCoordinate();
+        $this->assertTrue($this->grid->isAdjacent($origin, $origin));
+        $this->assertFalse($this->grid->isAdjacent($origin, $coord));
+        $this->assertFalse($this->grid->isAdjacent($coord, $origin));
     }
-    
+
     /**
      * @brief Test getting and setting weights.
      */
-    public function testWeights()
+    public function testGetSetWeight()
     {
         $origin = $this->createMockCoordinate();
-        $this->assertEquals($origin, $this->grid->getNeighbors($origin));
+        $neighbor = clone $origin;
+        $this->assertEquals(1, $this->grid->getWeight($origin, $neighbor));
+        $this->grid->setWeight($origin, $neighbor, 4);
+        $this->assertEquals(4, $this->grid->getWeight($origin, $neighbor));
+        $this->assertEquals(1, $this->grid->getWeight($neighbor, $origin));
+    }
+    
+    /**
+     * @brief Test setting weights of non-neighbors
+     * @expectedException UnexpectedValueException
+     */
+    public function testSetBadWeight()
+    {
+        $origin = $this->createMockCoordinate();
+        $coord = $this->createMockCoordinate();
+        $this->grid->setWeight($origin, $coord, 4);
+    }
+    
+    /**
+     * @brief Test getting weights of non-neighbors
+     * @expectedException UnexpectedValueException
+     */
+    public function testGetBadWeight()
+    {
+        $origin = $this->createMockCoordinate();
+        $coord = $this->createMockCoordinate();
+        $this->grid->getWeight($origin, $coord);
     }
 }

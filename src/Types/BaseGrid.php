@@ -61,7 +61,7 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
         assert('$coordinate instanceof $this->coordinateSystem');
         assert('$data instanceof TheWass\Grid\Cell');
         if ($this->isInGridRange($coordinate)) {
-            parent::offsetSet($coordinate, $data);
+            parent::offsetSet($coordinate, clone $data);
         } else {
             throw new \RangeException("Coordinate is outside of the grid.");
         }
@@ -105,16 +105,18 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
 
     public function getWeight(Coordinate $source, Coordinate $destination)
     {
-        if ($this->isAdjacent($source, $destination)) {
-            //Since they are adjacent, if getWeight returns false, then the weight is 1.
-            return (getCell($source)->getWeight($destination)) ?: 1;
-        } else {
-            return false;
+        if (!$this->isAdjacent($source, $destination)) {
+            throw new \UnexpectedValueException("$destination is not adjacent to $source.");
         }
+        //Since they are adjacent, if getWeight returns false, then the weight is 1.
+        return ($this->getCell($source)->getWeight($destination)) ?: 1;
     }
 
     public function setWeight(Coordinate $source, Coordinate $destination, $weight)
     {
-        getCell($source)->setWeight($destination, $weight);
+        if (!$this->isAdjacent($source, $destination)) {
+            throw new \UnexpectedValueException("$destination is not adjacent to $source.");
+        }
+        $this->getCell($source)->setWeight($destination, $weight);
     }
 }
