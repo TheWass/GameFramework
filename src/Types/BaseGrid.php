@@ -20,6 +20,9 @@
  * * The cell stores the neighbors' weights and the cell data.
  * @version 2.1 - 2015-04-27
  * * Assertified the if statements that checked type.
+ * @version 2.2 - 2015-05-07
+ * * Repaired Get/Set Weight.
+ * * Class is now fully tested.
  */
 namespace TheWass\Grid\Types;
 

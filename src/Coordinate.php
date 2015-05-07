@@ -35,7 +35,11 @@ abstract class Coordinate
         //Get list of property names of the child.
         $properties = array_keys(get_class_vars(get_class($this)));
         //combine arrays so $property => $value
-        $toAssign = array_combine($properties, func_get_args());
+        $toAssign = @array_combine($properties, func_get_args());
+        if ($toAssign === false) {
+            //Throw exception rather than error
+            throw new \InvalidArgumentException("Invalid number of arguments");
+        }
         //Set properties
         foreach ($toAssign as $prop=>$val) {
             if ($this->validate($prop, $val)) {

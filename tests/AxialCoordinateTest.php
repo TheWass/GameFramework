@@ -1,45 +1,42 @@
 <?php
 /**
- * @file SquareCoordinateTest.php
+ * @file AxialCoordinateTest.php
  * @author The Wass
- * @brief This file tests the Square Coordinate system
+ * @brief This file tests the Axial Coordinate system
  *
- * @version 1.0 - 2015-03-31
+ * @version 1.0 - 2015-05-07
  * * Initial version
- * @version 2.0 - 2015-04-03
- * * Removed neighbors
- * @version 2.1 - 2015-04-13
- * * Added expected neighbors
- * @version 3.0 - 2015-05-07
- * * Changed structure, added an interface to comply to.
  */
 namespace TheWass\Grid\Tests;
 
-use TheWass\Grid\Coordinates\Square;
+use TheWass\Grid\Coordinates\Axial;
+use TheWass\Grid\Coordinates\HexCube;
 /**
- * @class SquareCoordinateTest
+ * @class AxialCoordinateTest
  * @author The Wass
- * @brief Collection of tests for the Square Coordinate System
- * @description  This class determines what separates a Square coordinate from any other.
+ * @brief Collection of tests for the Axial Coordinate System
+ * @description  This class determines what separates an Axial coordinate from any other.
  */
-class SquareCoordinateTest extends \PHPUnit_Framework_TestCase implements CoordinateTestInterface
+class AxialCoordinateTest extends \PHPUnit_Framework_TestCase implements CoordinateTestInterface
 {
     private $testCoord;
     public function setUp()
     {
-        $this->testCoord = new Square(0, 0);
+        $this->testCoord = new Axial(0, 0);
     }
-    
+
     /**
      * @brief Test correct calculation of the neighbors
      */
     public function testCalculateNeighbors()
     {
         $expectedNeighbors = array(
-            new Square(1, 0),
-            new Square(0, 1),
-            new Square(-1, 0),
-            new Square(0, -1)
+            new Axial(1, 0),
+            new Axial(0, 1),
+            new Axial(-1, 0),
+            new Axial(0, -1),
+            new Axial(1, -1),
+            new Axial(-1, 1)
         );
         $neighbors = $this->testCoord->calculateNeighbors();
         $this->assertEmpty(array_diff($expectedNeighbors, $neighbors));
@@ -61,7 +58,7 @@ class SquareCoordinateTest extends \PHPUnit_Framework_TestCase implements Coordi
     {
         $this->testCoord->x = 1;
     }
-    
+
     public function badConstructorValues()
     {
         return array(
@@ -78,7 +75,16 @@ class SquareCoordinateTest extends \PHPUnit_Framework_TestCase implements Coordi
      */
     public function testConstructorBadValues()
     {
-        $rc = new \ReflectionClass('TheWass\Grid\Coordinates\Square');
+        $rc = new \ReflectionClass('TheWass\Grid\Coordinates\Axial');
         $inst = $rc->newInstanceArgs(func_get_args());
+    }
+
+    /**
+     * @brief Test converting to a HexCube coordinate
+     */
+    public function testConvertToHexCube()
+    {
+        $hexCube = new HexCube(0, 0, 0);
+        $this->assertEquals($hexCube, $this->testCoord->toHexCube());
     }
 }

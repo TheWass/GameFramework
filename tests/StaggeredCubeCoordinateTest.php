@@ -1,33 +1,27 @@
 <?php
 /**
- * @file SquareCoordinateTest.php
+ * @file StaggeredCubeCoordinateTest.php
  * @author The Wass
- * @brief This file tests the Square Coordinate system
+ * @brief This file tests the StaggeredCube Coordinate system
  *
- * @version 1.0 - 2015-03-31
+ * @version 1.0 - 2015-05-07
  * * Initial version
- * @version 2.0 - 2015-04-03
- * * Removed neighbors
- * @version 2.1 - 2015-04-13
- * * Added expected neighbors
- * @version 3.0 - 2015-05-07
- * * Changed structure, added an interface to comply to.
  */
 namespace TheWass\Grid\Tests;
 
-use TheWass\Grid\Coordinates\Square;
+use TheWass\Grid\Coordinates\StaggeredCube;
 /**
- * @class SquareCoordinateTest
+ * @class StaggeredCubeCoordinateTest
  * @author The Wass
- * @brief Collection of tests for the Square Coordinate System
- * @description  This class determines what separates a Square coordinate from any other.
+ * @brief Collection of tests for the StaggeredCube Coordinate System
+ * @description  This class determines what separates a StaggeredCube coordinate from any other.
  */
-class SquareCoordinateTest extends \PHPUnit_Framework_TestCase implements CoordinateTestInterface
+class StaggeredCubeCoordinateTest extends \PHPUnit_Framework_TestCase implements CoordinateTestInterface
 {
     private $testCoord;
     public function setUp()
     {
-        $this->testCoord = new Square(0, 0);
+        $this->testCoord = new StaggeredCube(0, 0, 0);
     }
     
     /**
@@ -36,10 +30,18 @@ class SquareCoordinateTest extends \PHPUnit_Framework_TestCase implements Coordi
     public function testCalculateNeighbors()
     {
         $expectedNeighbors = array(
-            new Square(1, 0),
-            new Square(0, 1),
-            new Square(-1, 0),
-            new Square(0, -1)
+            new StaggeredCube(-1, -1, -1),
+            new StaggeredCube(0, -1, -1),
+            new StaggeredCube(-1, 0, -1),
+            new StaggeredCube(0, 0, -1),
+            new StaggeredCube(-1, 0, 0),
+            new StaggeredCube(0, -1, 0),
+            new StaggeredCube(0, 1, 0),
+            new StaggeredCube(1, 0, 0),
+            new StaggeredCube(0, 0, 1),
+            new StaggeredCube(1, 0, 1),
+            new StaggeredCube(0, 1, 1),
+            new StaggeredCube(1, 1, 1)
         );
         $neighbors = $this->testCoord->calculateNeighbors();
         $this->assertEmpty(array_diff($expectedNeighbors, $neighbors));
@@ -65,9 +67,9 @@ class SquareCoordinateTest extends \PHPUnit_Framework_TestCase implements Coordi
     public function badConstructorValues()
     {
         return array(
-            array(1),
-            array(1, 2, 3),
-            array('bob', 'joe')
+            array(1, 2),
+            array(1, 2, 3, 4),
+            array('bob', 'joe', 'billy')
         );
     }
 
@@ -78,7 +80,7 @@ class SquareCoordinateTest extends \PHPUnit_Framework_TestCase implements Coordi
      */
     public function testConstructorBadValues()
     {
-        $rc = new \ReflectionClass('TheWass\Grid\Coordinates\Square');
+        $rc = new \ReflectionClass('TheWass\Grid\Coordinates\StaggeredCube');
         $inst = $rc->newInstanceArgs(func_get_args());
     }
 }

@@ -23,7 +23,7 @@ class Axial extends Coordinate
     protected $x;
     protected $y;
 
-    protected function calculateNeighbors()
+    public function calculateNeighbors()
     {
         return array(
             new Axial($this->x + 1, $this->y),

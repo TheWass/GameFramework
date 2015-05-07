@@ -14,6 +14,9 @@
  * @version 2.1 - 2015-04-13
  * * Added verifying neighbor calculations.
  * * Added Invalid Constructor tests.
+ * @version 3.0 - 2015-05-07
+ * * Made Concrete to avoid testing multiple times.
+ * * Moved functions which rely on the attributes out of this test.
  */
 namespace TheWass\Grid\Tests;
 /**
@@ -25,94 +28,47 @@ namespace TheWass\Grid\Tests;
  * * Able to get components
  * * Able to calculate neighbors
  */
-abstract class CoordinateTest extends \PHPUnit_Framework_TestCase
+class CoordinateTest extends \PHPUnit_Framework_TestCase
 {
-    //Expected values
-    protected $components;  ///< An array of component names
+    private $coordinate;
+    const OUTPUT_REGEX = '/^\(-?.+(?:, -?.+)*\)$/';
 
     /**
      * @brief Initialize *all* protected attributes of this class in the setup function.
      */
-    public function setUp(){}
-
-    /**
-     * @brief Provide coordinate objects for testing.
-     * @return array of arrays of coordinate objects
-     */
-    abstract public function coordinateProvider();
-
-    /**
-     * @brief Provide expected neighbor calculations for testing.
-     * @return array of neighbors for the coordinate.
-     */
-    abstract public function getExpectedNeighbors($coordinate);
-
-    /**
-     * @brief Test the constructor for an invalid coordinate value
-     * @expectedException InvalidArgumentException
-     */
-    abstract public function testConstructorBadValues();
+    public function setUp()
+    {
+        $this->coordinate = $this->getMockBuilder('TheWass\Grid\Coordinate')
+                                 ->setMockClassName('TestCoordinate')
+                                 ->disableOriginalConstructor()
+                                 ->getMockForAbstractClass();
+        $this->coordinate->method('calculateNeighbors')
+                         ->will($this->returnValue(array($this->coordinate)));
+    }
 
     /**
      * @brief Test the output string looks like a coordinate.
-     * @dataProvider coordinateProvider
      */
-    public function testString($coordinate)
+    public function testString()
     {
-        $this->expectOutputRegex('/^\(-?.+(?:, -?.+)*\)$/');
-        print $coordinate;
-    }
-
-    /**
-     * @brief Test getting components of the coordinate.
-     * @dataProvider coordinateProvider
-     */
-    public function testGetComponents($coordinate)
-    {
-        foreach ($this->components as $component) {
-            $this->assertNotNull($coordinate->{$component});
-        }
-    }
-
-    /**
-     * @brief Test correct calculation of the neighbors
-     * @dataProvider coordinateProvider
-     */
-    public function testCalculateNeighbors($coordinate)
-    {
-        $expectedNeighbors = $this->getExpectedNeighbors($coordinate);
-        $neighbors = $coordinate->calculateNeighbors();
-        //array_diff checks the string representation of the coordinate.
-        $this->assertEmpty(array_diff($expectedNeighbors, $neighbors));
-    }
-
-    /**
-     * @brief Test setting the first component
-     * @expectedException BadMethodCallException
-     * @dataProvider coordinateProvider
-     */
-    public function testSetComponent($coordinate)
-    {
-        $coordinate->{$this->components[0]} = 4;
+        $this->assertEquals('()', $this->coordinate->__toString());
     }
 
     /**
      * @brief Test adding a new property
      * @expectedException BadMethodCallException
-     * @dataProvider coordinateProvider
      */
-    public function testSelfMutate($coordinate)
+    public function testSelfMutateFail()
     {
-        $coordinate->newProperty = 'bob';
+        $this->coordinate->newProperty = 'bob';
     }
 
     /**
      * @brief Test getting an invalid property
      * @expectedException BadMethodCallException
-     * @dataProvider coordinateProvider
      */
-    public function testBadGet($coordinate)
+    public function testGetFail()
     {
-        $var = $coordinate->newProperty;
+        $var = $this->coordinate->newProperty;
     }
 }

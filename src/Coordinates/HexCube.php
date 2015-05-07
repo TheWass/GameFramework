@@ -25,15 +25,15 @@ class HexCube extends Coordinate
     protected $y;
     protected $z;
     
-    public function __construct($x, $y, $z)
+    public function __construct($x = null, $y = null, $z = null)
     {
         if ($x + $y + $z != 0) {
-            throw new InvalidArgumentException("($x, $y, $z) is not a valid HexCube Coordinate.");
+            throw new \InvalidArgumentException("($x, $y, $z) is not a valid HexCube Coordinate.");
         }
         parent::__construct($x, $y, $z);
     }
 
-    protected function calculateNeighbors()
+    public function calculateNeighbors()
     {
         return array(
             new HexCube($this->x + 1, $this->y - 1, $this->z),
@@ -47,10 +47,6 @@ class HexCube extends Coordinate
 
     public function toAxial()
     {
-        if ($this->x + $this->y + $this->z == 0) {
-            return new Axial($this->x, $this->y);
-        } else {
-            return false;
-        }
+        return new Axial($this->x, $this->y);
     }
 }
