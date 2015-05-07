@@ -7,7 +7,7 @@
  * @version 1.0 - 2015-05-07
  * * Initial version
  */
-namespace TheWass\Grid\Tests;
+namespace TheWass\Grid\Tests\Coordinates;
 
 use TheWass\Grid\Coordinates\StaggeredCube;
 /**

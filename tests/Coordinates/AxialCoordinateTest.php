@@ -1,28 +1,28 @@
 <?php
 /**
- * @file HexCubeCoordinateTest.php
+ * @file AxialCoordinateTest.php
  * @author The Wass
- * @brief This file tests the HexCube Coordinate system
+ * @brief This file tests the Axial Coordinate system
  *
  * @version 1.0 - 2015-05-07
  * * Initial version
  */
-namespace TheWass\Grid\Tests;
+namespace TheWass\Grid\Tests\Coordinates;
 
 use TheWass\Grid\Coordinates\Axial;
 use TheWass\Grid\Coordinates\HexCube;
 /**
- * @class HexCubeCoordinateTest
+ * @class AxialCoordinateTest
  * @author The Wass
- * @brief Collection of tests for the HexCube Coordinate System
- * @description  This class determines what separates a HexCube coordinate from any other.
+ * @brief Collection of tests for the Axial Coordinate System
+ * @description  This class determines what separates an Axial coordinate from any other.
  */
-class HexCubeCoordinateTest extends \PHPUnit_Framework_TestCase implements CoordinateTestInterface
+class AxialCoordinateTest extends \PHPUnit_Framework_TestCase implements CoordinateTestInterface
 {
     private $testCoord;
     public function setUp()
     {
-        $this->testCoord = new HexCube(0, 0, 0);
+        $this->testCoord = new Axial(0, 0);
     }
 
     /**
@@ -31,12 +31,12 @@ class HexCubeCoordinateTest extends \PHPUnit_Framework_TestCase implements Coord
     public function testCalculateNeighbors()
     {
         $expectedNeighbors = array(
-            new HexCube(1, 0, -1),
-            new HexCube(0, 1, -1),
-            new HexCube(-1, 0, 1),
-            new HexCube(0, -1, 1),
-            new HexCube(1, -1, 0),
-            new HexCube(-1, 1, 0)
+            new Axial(1, 0),
+            new Axial(0, 1),
+            new Axial(-1, 0),
+            new Axial(0, -1),
+            new Axial(1, -1),
+            new Axial(-1, 1)
         );
         $neighbors = $this->testCoord->calculateNeighbors();
         $this->assertEmpty(array_diff($expectedNeighbors, $neighbors));
@@ -62,10 +62,9 @@ class HexCubeCoordinateTest extends \PHPUnit_Framework_TestCase implements Coord
     public function badConstructorValues()
     {
         return array(
-            array(1, 2),
+            array(1),
             array(1, 2, 3),
-            array(1, 2, 3, 4),
-            array('bob', 'joe', 'billy')
+            array('bob', 'joe')
         );
     }
 
@@ -76,16 +75,16 @@ class HexCubeCoordinateTest extends \PHPUnit_Framework_TestCase implements Coord
      */
     public function testConstructorBadValues()
     {
-        $rc = new \ReflectionClass('TheWass\Grid\Coordinates\HexCube');
+        $rc = new \ReflectionClass('TheWass\Grid\Coordinates\Axial');
         $inst = $rc->newInstanceArgs(func_get_args());
     }
 
     /**
-     * @brief Test converting to an Axial coordinate
+     * @brief Test converting to a HexCube coordinate
      */
     public function testConvertToHexCube()
     {
-        $axial = new Axial(0, 0);
-        $this->assertEquals($axial, $this->testCoord->toAxial());
+        $hexCube = new HexCube(0, 0, 0);
+        $this->assertEquals($hexCube, $this->testCoord->toHexCube());
     }
 }
