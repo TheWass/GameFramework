@@ -9,7 +9,8 @@
  */
 namespace TheWass\Grid\Tests\Grids;
 
-use TheWass\Grid\Square;
+use TheWass\Grid\Types\Square as SquareGrid;
+use TheWass\Grid\Coordinates\Square as SquareCoordinate;
 /**
  * @class SquareGridTest
  * @author The Wass
@@ -18,8 +19,18 @@ use TheWass\Grid\Square;
  */
 class SquareGridTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @brief Test the boundary coordinates of the grid.
+     */
     public function testRange()
     {
-        $this->assertTrue(true);
+        $testGrid = new SquareGrid(5);
+        $this->assertTrue($testGrid->isInGridRange(new SquareCoordinate(1, 1)));
+        $this->assertTrue($testGrid->isInGridRange(new SquareCoordinate(-1, -1)));
+        $this->assertTrue($testGrid->isInGridRange(new SquareCoordinate(5, 5)));
+        $this->assertTrue($testGrid->isInGridRange(new SquareCoordinate(-5, -5)));
+        $this->assertFalse($testGrid->isInGridRange(new SquareCoordinate(-6, -6)));
+        $this->assertFalse($testGrid->isInGridRange(new SquareCoordinate(6, 6)));
+        
     }
 }

@@ -47,6 +47,7 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
      */
     public function __construct($coordinateSystem)
     {
+        //var_dump(class_parents("TheWass\Grid\Coordinates\\$coordinateSystem"));
         assert('in_array(\'TheWass\Grid\Coordinate\', class_parents($coordinateSystem))');
         $this->coordinateSystem = $coordinateSystem;
     }

@@ -12,6 +12,7 @@
 namespace TheWass\Grid\Types;
 
 use TheWass\Grid\Coordinates\Square as SquareCoordinate;
+use TheWass\Grid\Coordinate;
 /**
  * @class Rectangle
  * @author The Wass
@@ -35,8 +36,9 @@ class Rectangle extends BaseGrid
         $this->height = $height;
     }
 
-    protected function isInGridRange(SquareCoordinate $coordinate)
+    protected function isInGridRange(Coordinate $coordinate)
     {
+        assert('$coordinate instanceof SquareCoordinate');
         return ((abs($coordinate->x) <= $this->width || $this->width == 0) &&
                 (abs($coordinate->y) <= $this->height || $this->height == 0));
     }
