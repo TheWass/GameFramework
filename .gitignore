@@ -1,2 +1,4 @@
 vendor
 clover.xml
+*.DS_Store
+composer.lock
