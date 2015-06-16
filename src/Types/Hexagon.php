@@ -32,7 +32,7 @@ class Hexagon extends BaseGrid
         parent::__construct('Axial');
     }
 
-    protected function isInGridRange(Axial $coordinate)
+    public function isInGridRange(Axial $coordinate)
     {
         return ($this->radius <= 0 && ($coordinate->x <= $this->radius && $coordinate->y <= $this->radius));
     }

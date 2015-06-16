@@ -47,7 +47,10 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
      */
     public function __construct($coordinateSystem)
     {
+        var_dump($coordinateSystem);
+        //var_dump(class_parents($coordinateSystem));
         //var_dump(class_parents("TheWass\Grid\Coordinates\\$coordinateSystem"));
+        $coordinateSystem = 'TheWass\Grid\Coordinates\\' . $coordinateSystem;
         assert('in_array(\'TheWass\Grid\Coordinate\', class_parents($coordinateSystem))');
         $this->coordinateSystem = $coordinateSystem;
     }
@@ -57,7 +60,7 @@ abstract class BaseGrid extends \SplObjectStorage implements Grid
      * @param $coordinate - The coordinate to test
      * @return Boolean True if the coordinate lies within the grid; False if it does not.
      */
-    abstract protected function isInGridRange(Coordinate $coordinate);
+    abstract public function isInGridRange(Coordinate $coordinate);
 
     ///////////SPLObjectStorage Overwrites//////////////
     final public function offsetSet($coordinate, $data = null)

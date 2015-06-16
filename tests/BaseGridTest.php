@@ -20,13 +20,15 @@ class BaseGridTest extends \PHPUnit_Framework_TestCase
 {
     private $grid;
 
+    const TEST_COORD_CLASS_NAME = 'TestCoordinate';
+
     public function setUp()
     {
         //Trigger autoloader
         $this->createMockCoordinate();
         //Create Grid mock object
         $this->grid = $this->getMockbuilder('TheWass\Grid\Types\BaseGrid')
-                           ->setConstructorArgs(array('TestCoordinate'))
+                           ->setConstructorArgs(array(self::TEST_COORD_CLASS_NAME))
                            ->getMockForAbstractClass();
         $this->grid->expects($this->any())
                    ->method('isInGridRange')
@@ -41,7 +43,7 @@ class BaseGridTest extends \PHPUnit_Framework_TestCase
     public function createMockCoordinate()
     {
         $coord = $this->getMockBuilder('TheWass\Grid\Coordinate')
-                      ->setMockClassName('TestCoordinate')
+                      ->setMockClassName(self::TEST_COORD_CLASS_NAME)
                       ->disableOriginalConstructor()
                       ->getMockForAbstractClass();
         $coord->method('calculateNeighbors')
@@ -134,7 +136,7 @@ class BaseGridTest extends \PHPUnit_Framework_TestCase
     {
         //Gotta build a new grid with the altered isInGridRange method.
         $grid = $this->getMockbuilder('TheWass\Grid\Types\BaseGrid')
-                     ->setConstructorArgs(array('TestCoordinate'))
+                     ->setConstructorArgs(array(self::TEST_COORD_CLASS_NAME))
                      ->getMockForAbstractClass();
         $grid->expects($this->any())
              ->method('isInGridRange')

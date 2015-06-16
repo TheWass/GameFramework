@@ -36,9 +36,9 @@ class Rectangle extends BaseGrid
         $this->height = $height;
     }
 
-    protected function isInGridRange(Coordinate $coordinate)
+    public function isInGridRange(Coordinate $coordinate)
     {
-        assert('$coordinate instanceof SquareCoordinate');
+        assert('$coordinate instanceof TheWass\Grid\Coordinates\Square');
         return ((abs($coordinate->x) <= $this->width || $this->width == 0) &&
                 (abs($coordinate->y) <= $this->height || $this->height == 0));
     }
