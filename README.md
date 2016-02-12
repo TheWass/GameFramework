@@ -1,4 +1,5 @@
-#Grid
+Grid
+====
 Travis: [![Travis Status](https://travis-ci.org/TheWass/Grid.svg?branch=master)](https://travis-ci.org/TheWass/Grid.svg?branch=master)  
 Scrutinizer:
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/TheWass/Grid/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/TheWass/Grid/?branch=master)
@@ -13,3 +14,4 @@ The grid is an SPLObjectStorage of many cells.
 Each cell has a coordinate which functions as its ID.
 The cell has an SPLObjectStorage of all the neighbors and associated weights to the neighbors only if the weights are not default.
 Otherwise, the neighbors are calculated based on the coordinate system.
+
